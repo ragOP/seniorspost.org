@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const fetchWebsiteOptions = async () => {
   const response = await fetch(
-    "https:/phonepe-be.onrender.com/api/admin/get-all-website-views"
+    "https://phonepe-be.onrender.com/api/admin/get-all-website-views"
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -22,7 +22,13 @@ const fetchWebsiteOptions = async () => {
 
 const fetchButtonOptions = async () => {
   const response = await fetch(
-    "https:/phonepe-be.onrender.com/api/admin/get-all-button-views"
+    "https://phonepe-be.onrender.com/api/admin/get-all-button-views",
+    {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache", 
+      },
+    }
   );
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -226,7 +232,11 @@ export const AdminShowWebsiteButtonDetails = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "rgb(249, 61, 102)"}}>
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                sx={{ color: "rgb(249, 61, 102)" }}
+              >
                 Website Details:
               </Typography>
               <Typography variant="body2">
@@ -251,7 +261,11 @@ export const AdminShowWebsiteButtonDetails = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "rgb(249, 61, 102)"}}>
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                sx={{ color: "rgb(249, 61, 102)" }}
+              >
                 Button Details:
               </Typography>
               <Typography variant="body2">
