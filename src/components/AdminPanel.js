@@ -26,7 +26,7 @@ const fetchButtonOptions = async () => {
     {
       method: "GET",
       headers: {
-        "Cache-Control": "no-cache", 
+        "Cache-Control": "no-cache",
       },
     }
   );
@@ -38,9 +38,9 @@ const fetchButtonOptions = async () => {
 
 const AdminPanel = () => {
   const [selectedWebsite, setSelectedWebsite] = useState(null);
-  const [selectedButton, setSelectedButton] = useState(null);
+  // const [selectedButton, setSelectedButton] = useState(null);
 
-  const showWebsiteDetails = selectedButton || selectedWebsite;
+  // const showWebsiteDetails = selectedButton || selectedWebsite;
 
   return (
     <Box
@@ -76,11 +76,11 @@ const AdminPanel = () => {
         justifyContent="center"
         sx={{ flex: 1, padding: "1rem", gap: "2rem" }}
       >
-        <AdminPanelButtons setSelectedButton={setSelectedButton} />
-        {showWebsiteDetails && (
+        {/* <AdminPanelButtons setSelectedButton={setSelectedButton} /> */}
+        {selectedWebsite && (
           <AdminShowWebsiteButtonDetails
             selectedWebsite={selectedWebsite}
-            selectedButton={selectedButton}
+            // selectedButton={selectedButton}
           />
         )}
       </Stack>
@@ -103,11 +103,13 @@ export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
 
   const handleChange = (event) => {
     const selectedWebsite = websiteOptions.data.find(
-      (option) => option._id === event.target.value
+      (option) => option.websiteId === event.target.value
     );
     setSelectedOption(event.target.value);
     setSelectedWebsite(selectedWebsite);
   };
+
+  console.log(">>", websiteOptions);
 
   return (
     <Stack
@@ -131,13 +133,15 @@ export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
           <MenuItem value="" disabled>
             Select a website
           </MenuItem>
-          {websiteOptions.data.map((option) => (
-            <MenuItem key={option._id} value={option._id}>
-              {option.websiteName
-                ? option.websiteName
-                : `Website ${option.websiteId}`}
-            </MenuItem>
-          ))}
+          {websiteOptions?.data &&
+            websiteOptions?.data?.length > 0 &&
+            websiteOptions.data.map((option) => (
+              <MenuItem key={option.websiteId} value={option.websiteId}>
+                {option.websiteName
+                  ? option.websiteName
+                  : `Website ${option.websiteId}`}
+              </MenuItem>
+            ))}
         </Select>
       )}
     </Stack>
@@ -198,8 +202,9 @@ export const AdminPanelButtons = ({ setSelectedButton }) => {
 
 export const AdminShowWebsiteButtonDetails = ({
   selectedWebsite,
-  selectedButton,
+  // selectedButton,
 }) => {
+  console.log("selectedWebsite", selectedWebsite);
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -223,7 +228,7 @@ export const AdminShowWebsiteButtonDetails = ({
           transition={{ duration: 0.5 }}
           sx={{ color: "rgb(245, 47, 90)" }}
         >
-          Selected Website & Button Details
+          Selected Website Details
         </Typography>
         <Stack spacing={2}>
           {selectedWebsite && (
@@ -240,22 +245,42 @@ export const AdminShowWebsiteButtonDetails = ({
                 Website Details:
               </Typography>
               <Typography variant="body2">
-                <strong>ID:</strong> {selectedWebsite._id}
-              </Typography>
-              <Typography variant="body2">
                 <strong>Website ID:</strong> {selectedWebsite.websiteId}
               </Typography>
+
               <Typography variant="body2">
-                <strong>Visited:</strong> {selectedWebsite.visited}
+                <strong>Visited:</strong> {selectedWebsite.totalVisits}
               </Typography>
               {selectedWebsite.websiteName && (
                 <Typography variant="body2">
                   <strong>Name:</strong> {selectedWebsite.websiteName}
                 </Typography>
               )}
+              <Typography variant="body2">
+                <strong>Converstion Rate: </strong>
+                {selectedWebsite.conversionPercentage || 0}
+              </Typography>
+              {selectedWebsite.buttonClicks && (
+                <Box>
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    sx={{ color: "rgb(249, 61, 102)" }}
+                  >
+                    Button Clicks:
+                  </Typography>
+                  {Object.entries(selectedWebsite.buttonClicks).map(
+                    ([key, value]) => (
+                      <Typography key={key} variant="body2">
+                        <strong>Button {key}:</strong> {value}
+                      </Typography>
+                    )
+                  )}
+                </Box>
+              )}
             </motion.div>
           )}
-          {selectedButton && (
+          {/* {selectedButton && (
             <motion.div
               initial={{ opacity: 0, x: 10 }}
               animate={{ opacity: 1, x: 0 }}
@@ -275,7 +300,7 @@ export const AdminShowWebsiteButtonDetails = ({
                 <strong>Button ID:</strong> {selectedButton.buttonId}
               </Typography>
             </motion.div>
-          )}
+          )} */}
         </Stack>
       </Box>
     </motion.div>
