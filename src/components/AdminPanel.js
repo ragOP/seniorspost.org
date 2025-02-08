@@ -34,6 +34,8 @@ const AdminPanel = () => {
   const [selectedWebsite, setSelectedWebsite] = useState(null);
   const [selectedButton, setSelectedButton] = useState(null);
 
+  const showWebsiteDetails = selectedButton || selectedWebsite;
+
   return (
     <Box
       display="flex"
@@ -69,10 +71,12 @@ const AdminPanel = () => {
         sx={{ flex: 1, padding: "1rem", gap: "2rem" }}
       >
         <AdminPanelButtons setSelectedButton={setSelectedButton} />
-        <AdminShowWebsiteButtonDetails
-          selectedWebsite={selectedWebsite}
-          selectedButton={selectedButton}
-        />
+        {showWebsiteDetails && (
+          <AdminShowWebsiteButtonDetails
+            selectedWebsite={selectedWebsite}
+            selectedButton={selectedButton}
+          />
+        )}
       </Stack>
     </Box>
   );
@@ -200,7 +204,6 @@ export const AdminShowWebsiteButtonDetails = ({
       <Box
         sx={{
           padding: "1rem",
-          width: "100%",
           borderRadius: "8px",
           backgroundColor: "rgba(255, 255, 255, 0.1)",
         }}
@@ -212,6 +215,7 @@ export const AdminShowWebsiteButtonDetails = ({
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
+          sx={{ color: "rgb(245, 47, 90)" }}
         >
           Selected Website & Button Details
         </Typography>
@@ -222,7 +226,7 @@ export const AdminShowWebsiteButtonDetails = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "rgb(249, 61, 102)"}}>
                 Website Details:
               </Typography>
               <Typography variant="body2">
@@ -247,7 +251,7 @@ export const AdminShowWebsiteButtonDetails = ({
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Typography variant="subtitle1" fontWeight="bold">
+              <Typography variant="subtitle1" fontWeight="bold" sx={{ color: "rgb(249, 61, 102)"}}>
                 Button Details:
               </Typography>
               <Typography variant="body2">
