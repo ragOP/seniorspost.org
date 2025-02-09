@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -20,27 +20,16 @@ const fetchWebsiteOptions = async () => {
   return response.json();
 };
 
-const fetchButtonOptions = async () => {
-  const response = await fetch(
-    "https://phonepe-be.onrender.com/api/admin/get-all-button-views",
-    {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    }
-  );
+const fetchAnalytics = async (websiteId) => {
+  const response = await fetch(`https://phonepe-be.onrender.com/api/user/analytics/${websiteId}`);
   if (!response.ok) {
-    throw new Error("Network response was not ok");
+    throw new Error("Failed to fetch analytics");
   }
   return response.json();
 };
 
 const AdminPanel = () => {
   const [selectedWebsite, setSelectedWebsite] = useState(null);
-  // const [selectedButton, setSelectedButton] = useState(null);
-
-  // const showWebsiteDetails = selectedButton || selectedWebsite;
 
   return (
     <Box
@@ -63,7 +52,7 @@ const AdminPanel = () => {
           height: "100%",
           background:
             "linear-gradient(45deg, rgb(255, 197, 209) 20%, rgb(252, 207, 183) 80%)",
-          zIndex: -1,
+          zIndex: -1, 
           animation: "gradientFlow 5s ease infinite",
         }}
       />
@@ -76,12 +65,8 @@ const AdminPanel = () => {
         justifyContent="center"
         sx={{ flex: 1, padding: "1rem", gap: "2rem" }}
       >
-        {/* <AdminPanelButtons setSelectedButton={setSelectedButton} /> */}
         {selectedWebsite && (
-          <AdminShowWebsiteButtonDetails
-            selectedWebsite={selectedWebsite}
-            // selectedButton={selectedButton}
-          />
+          <AdminShowWebsiteButtonDetails selectedWebsite={selectedWebsite} />
         )}
       </Stack>
     </Box>
@@ -109,15 +94,8 @@ export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
     setSelectedWebsite(selectedWebsite);
   };
 
-  console.log(">>", websiteOptions);
-
   return (
-    <Stack
-      spacing={2}
-      direction="column"
-      alignItems="center"
-      sx={{ width: "100%" }}
-    >
+    <Stack spacing={2} direction="column" alignItems="center" sx={{ width: "100%" }}>
       {isLoading ? (
         <CircularProgress />
       ) : error ? (
@@ -133,65 +111,9 @@ export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
           <MenuItem value="" disabled>
             Select a website
           </MenuItem>
-          {websiteOptions?.data &&
-            websiteOptions?.data?.length > 0 &&
-            websiteOptions.data.map((option) => (
-              <MenuItem key={option.websiteId} value={option.websiteId}>
-                {option.websiteName
-                  ? option.websiteName
-                  : `Website ${option.websiteId}`}
-              </MenuItem>
-            ))}
-        </Select>
-      )}
-    </Stack>
-  );
-};
-
-export const AdminPanelButtons = ({ setSelectedButton }) => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const {
-    data: buttonOptions,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["buttonOptions"],
-    queryFn: fetchButtonOptions,
-  });
-
-  const handleChange = (event) => {
-    const selectedButton = buttonOptions.data.find(
-      (option) => option._id === event.target.value
-    );
-    setSelectedOption(event.target.value);
-    setSelectedButton(selectedButton);
-  };
-
-  return (
-    <Stack
-      spacing={2}
-      direction="column"
-      alignItems="center"
-      sx={{ width: "100%", padding: "1rem" }}
-    >
-      {isLoading ? (
-        <CircularProgress />
-      ) : error ? (
-        <div>Error loading button options</div>
-      ) : (
-        <Select
-          value={selectedOption}
-          onChange={handleChange}
-          sx={{ width: "100%" }}
-          variant="standard"
-          displayEmpty
-        >
-          <MenuItem value="" disabled>
-            Select a button
-          </MenuItem>
-          {buttonOptions.data.map((option) => (
-            <MenuItem key={option._id} value={option._id}>
-              {option.buttonId}
+          {websiteOptions?.data?.map((option) => (
+            <MenuItem key={option.websiteId} value={option.websiteId}>
+              {option.websiteName || `Website ${option.websiteId}`}
             </MenuItem>
           ))}
         </Select>
@@ -200,11 +122,25 @@ export const AdminPanelButtons = ({ setSelectedButton }) => {
   );
 };
 
-export const AdminShowWebsiteButtonDetails = ({
-  selectedWebsite,
-  // selectedButton,
-}) => {
-  console.log("selectedWebsite", selectedWebsite);
+export const AdminShowWebsiteButtonDetails = ({ selectedWebsite }) => {
+  const [analytics, setAnalytics] = useState(null);
+
+  useEffect(() => {
+    const fetchAnalyticsData = async () => {
+      try {
+        const data = await fetchAnalytics(selectedWebsite.websiteId);
+        console.log("Fetched analytics data:", data);
+        setAnalytics(data.analytics);
+      } catch (error) {
+        console.error("Error fetching analytics:", error);
+      }
+    };
+
+    if (selectedWebsite?.websiteId) {
+      fetchAnalyticsData();
+    }
+  }, [selectedWebsite]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -231,76 +167,47 @@ export const AdminShowWebsiteButtonDetails = ({
           Selected Website Details
         </Typography>
         <Stack spacing={2}>
-          {selectedWebsite && (
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                sx={{ color: "rgb(249, 61, 102)" }}
-              >
-                Website Details:
-              </Typography>
-              <Typography variant="body2">
-                <strong>Website ID:</strong> {selectedWebsite.websiteId}
-              </Typography>
-
-              <Typography variant="body2">
-                <strong>Visited:</strong> {selectedWebsite.totalVisits}
-              </Typography>
-              {selectedWebsite.websiteName && (
-                <Typography variant="body2">
-                  <strong>Name:</strong> {selectedWebsite.websiteName}
-                </Typography>
-              )}
-              <Typography variant="body2">
-                <strong>Converstion Rate: </strong>
-                {selectedWebsite.conversionPercentage || 0}
-              </Typography>
-              {selectedWebsite.buttonClicks && (
-                <Box>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ color: "rgb(249, 61, 102)" }}
-                  >
-                    Button Clicks:
-                  </Typography>
-                  {Object.entries(selectedWebsite.buttonClicks).map(
-                    ([key, value]) => (
-                      <Typography key={key} variant="body2">
-                        <strong>Button {key}:</strong> {value}
-                      </Typography>
-                    )
-                  )}
-                </Box>
-              )}
-            </motion.div>
+          <Typography variant="body2">
+            <strong>Website ID:</strong> {selectedWebsite.websiteId}
+          </Typography>
+          <Typography variant="body2">
+            <strong>Visited:</strong> {selectedWebsite.totalVisits}
+          </Typography>
+          {selectedWebsite.websiteName && (
+            <Typography variant="body2">
+              <strong>Name:</strong> {selectedWebsite.websiteName}
+            </Typography>
           )}
-          {/* {selectedButton && (
-            <motion.div
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bold"
-                sx={{ color: "rgb(249, 61, 102)" }}
-              >
-                Button Details:
+          <Typography variant="body2">
+            <strong>Conversion Rate:</strong> {selectedWebsite.conversionPercentage || 0}
+          </Typography>
+          {selectedWebsite.buttonClicks && (
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Button Clicks:
+              </Typography>
+              {Object.entries(selectedWebsite.buttonClicks).map(([key, value]) => (
+                <Typography key={key} variant="body2">
+                  <strong>Button {key}:</strong> {value}
+                </Typography>
+              ))}
+            </Box>
+          )}
+
+          {/* Display Analytics */}
+          {analytics && (
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Analytics:
               </Typography>
               <Typography variant="body2">
-                <strong>ID:</strong> {selectedButton._id}
+                <strong>Average Session Duration:</strong> {analytics.averageSessionDuration}
               </Typography>
               <Typography variant="body2">
-                <strong>Button ID:</strong> {selectedButton.buttonId}
+                <strong>Bounce Rate:</strong> {analytics.bounceRate}
               </Typography>
-            </motion.div>
-          )} */}
+            </Box>
+          )}
         </Stack>
       </Box>
     </motion.div>
