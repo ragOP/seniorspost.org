@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ShowHistoryPage from "./components/ShowHistoryPage";
-import AdminPanel from "./components/AdminPanel";
+import AdminPanel from "./pages/admin";
 
 function App() {
   const [isShowingPanel, setIsShowingPanel] = useState(false);
