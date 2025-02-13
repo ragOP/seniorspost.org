@@ -6,10 +6,28 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import HeightIcon from '@mui/icons-material/Height';
 
-export const AdminPanelHeader = ({ setSelectedWebsite, startDate, setStartDate, endDate, setEndDate, allTime, setAllTime, handleSearch, loading }) => {
+export const AdminPanelHeader = ({
+    setSelectedWebsite,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    allTime,
+    setAllTime,
+    handleSearch,
+    loading,
+    websiteOptions,
+    isLoading,
+    error
+}) => {
     return (
         <Stack direction="row" alignItems="center" sx={{ gap: "2rem", width: "100%" }}>
-            <AdminPanelWebsite setSelectedWebsite={setSelectedWebsite} />
+            <AdminPanelWebsite
+                setSelectedWebsite={setSelectedWebsite}
+                websiteOptions={websiteOptions}
+                isLoading={isLoading}
+                error={error}
+            />
 
             <Stack direction="row" alignItems="center" sx={{ width: "50%", gap: "1rem" }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -50,16 +68,9 @@ export const AdminPanelHeader = ({ setSelectedWebsite, startDate, setStartDate, 
 };
 
 
-export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
+export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoading, error }) => {
     const [selectedOption, setSelectedOption] = useState("");
-    const {
-        data: websiteOptions,
-        isLoading,
-        error,
-    } = useQuery({
-        queryKey: ["websiteOptions"],
-        queryFn: fetchWebsiteOptions,
-    });
+
 
     const handleChange = (event) => {
         const selectedWebsite = websiteOptions.data.find(

@@ -8,6 +8,8 @@ import AdminShowWebsiteButtonDetails from "./components/AdminShowWebsiteButtonDe
 import { AdminPanelHeader } from "./components/AdminPanelHeader";
 import dayjs from "dayjs";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { fetchWebsiteOptions } from "./helpers/fetchWebsiteOptions";
 
 const AdminPanel = () => {
   const [selectedWebsite, setSelectedWebsite] = useState(null);
@@ -17,6 +19,15 @@ const AdminPanel = () => {
   const [allTime, setAllTime] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const {
+    data: websiteOptions,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["websiteOptions"],
+    queryFn: fetchWebsiteOptions,
+  });
+
   const handleSearch = async () => {
     if (!allTime && (!startDate || !endDate)) {
       alert("Please select both start and end dates or enable 'All Time'");
@@ -25,14 +36,33 @@ const AdminPanel = () => {
 
     setLoading(true);
     try {
+      if (allTime) {
+        console.log(11111)
+        const getCurrentWebsiteData = websiteOptions?.data?.find((website) => website?.websiteId?.toString() === selectedWebsite?.websiteId?.toString());
+        setSelectedWebsiteData(getCurrentWebsiteData)
+        return
+      }
+
       const formattedStartDate = allTime ? null : dayjs(startDate).format("YYYY-MM-DD");
       const formattedEndDate = allTime ? null : dayjs(endDate).format("YYYY-MM-DD");
-      
+
+
       const url = "https://phonepe-be.onrender.com/api/admin/get-all-website-views2"
       const finalUrl = formattedStartDate && formattedEndDate ? `${url}?startDate=${formattedStartDate}&endDate=${formattedEndDate}` : url
 
       const response = await axios.get(finalUrl);
-      setSelectedWebsiteData(response?.data)
+
+      if (response?.data?.data?.length === 0) {
+        alert("No data found for the selected date range");
+      }
+      console.log("DATA>>>>", response?.data)
+      const getCurrentWebsiteData = response?.data?.data?.find((website) => website?.websiteId?.toString() === selectedWebsite?.websiteId?.toString());
+      if (!getCurrentWebsiteData) {
+        alert("No data found for the selected website");
+        return;
+      }
+
+      setSelectedWebsiteData(getCurrentWebsiteData)
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -76,6 +106,9 @@ const AdminPanel = () => {
           setAllTime={setAllTime}
           handleSearch={handleSearch}
           loading={loading}
+          websiteOptions={websiteOptions}
+          isLoading={isLoading}
+          error={error}
         />
       </Stack>
 

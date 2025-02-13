@@ -154,8 +154,8 @@ const AdminShowWebsiteButtonDetails = ({ selectedWebsite }) => {
                                 <Box display="flex" alignItems="center" gap={1}>
                                     <LinearProgress
                                         variant="determinate"
-                                        // value={selectedWebsite.conversionPercentage || 0}
-                                        value={60 || 0}
+                                        value={selectedWebsite.conversionPercentage || 0}
+                                        // value={60 || 0}
                                         sx={{ flex: 1, height: 10, borderRadius: 5, backgroundColor: "rgba(255, 255, 255, 0.2)" }}
                                     />
                                     <Typography variant="body2" sx={{ minWidth: 40 }}>
