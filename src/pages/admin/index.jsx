@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Box,
   Stack,
+} from "@mui/material";
+import {
+ 
+ 
+  Select,
+  MenuItem,
+  CircularProgress,
+  Typography,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import AdminShowWebsiteButtonDetails from "./components/AdminShowWebsiteButtonDetails";
@@ -18,6 +26,7 @@ const AdminPanel = () => {
   const [endDate, setEndDate] = useState(null);
   const [allTime, setAllTime] = useState(false);
   const [loading, setLoading] = useState(false);
+   const [analytics, setAnalytics] = useState(null);
 
   const {
     data: websiteOptions,
@@ -65,12 +74,41 @@ const AdminPanel = () => {
       }
 
       setSelectedWebsiteData(getCurrentWebsiteData)
+      console.log("dsdsDAdsdsdsTA>>>>", getCurrentWebsiteData.websiteId)
+    
+      const fetchAnalytics = async (websiteId) => {
+        const response = await fetch(`https://phonepe-be.onrender.com/api/user/analytics/${websiteId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch analytics");
+        }
+        return response.json();
+      };
+      fetchAnalytics(getCurrentWebsiteData.websiteId).then((data) => {    
+
+        console.log("Fetched analytics data:", data);
+        setAnalytics(data.analytics);
+      }
+      ).catch((error) => {
+        console.error("Error fetching analytics:", error);
+      }); 
+
+
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
+
+  const fetchAnalytics = async (websiteId) => {
+    const response = await fetch(`https://phonepe-be.onrender.com/api/user/analytics/${websiteId}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch analytics");
+    }
+    return response.json();
+  };
+  
+  
 
   return (
     <Box
@@ -124,6 +162,19 @@ const AdminPanel = () => {
             selectedWebsite={selectedWebsiteData}
           />
         )}
+          {analytics && (
+            <Box>
+              <Typography variant="subtitle1" fontWeight="bold">
+                Analytics:
+              </Typography>
+              <Typography variant="body2">
+                <strong>Average Session Duration:</strong> {analytics.averageSessionDuration}
+              </Typography>
+              <Typography variant="body2">
+                <strong>Bounce Rate:</strong> {analytics.bounceRate}
+              </Typography>
+            </Box>
+          )}
       </Stack>
     </Box>
   );

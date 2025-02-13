@@ -28,6 +28,9 @@ const fetchAnalytics = async (websiteId) => {
   return response.json();
 };
 
+
+
+
 const AdminPanel = () => {
   const [selectedWebsite, setSelectedWebsite] = useState(null);
 
@@ -128,7 +131,7 @@ export const AdminShowWebsiteButtonDetails = ({ selectedWebsite }) => {
   useEffect(() => {
     const fetchAnalyticsData = async () => {
       try {
-        const data = await fetchAnalytics(selectedWebsite.websiteId);
+        const data = await fetchAnalytics(localStorage.getItem("websiteId"));
         console.log("Fetched analytics data:", data);
         setAnalytics(data.analytics);
       } catch (error) {
@@ -139,7 +142,7 @@ export const AdminShowWebsiteButtonDetails = ({ selectedWebsite }) => {
     if (selectedWebsite?.websiteId) {
       fetchAnalyticsData();
     }
-  }, [selectedWebsite]);
+  }, [localStorage.getItem("websiteId")]);
 
   return (
     <motion.div
