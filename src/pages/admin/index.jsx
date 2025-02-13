@@ -54,7 +54,9 @@ const AdminPanel = () => {
 
       if (response?.data?.data?.length === 0) {
         alert("No data found for the selected date range");
+        return
       }
+      
       console.log("DATA>>>>", response?.data)
       const getCurrentWebsiteData = response?.data?.data?.find((website) => website?.websiteId?.toString() === selectedWebsite?.websiteId?.toString());
       if (!getCurrentWebsiteData) {
