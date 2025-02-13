@@ -4,7 +4,7 @@ import { useState } from "react";
 import { fetchWebsiteOptions } from "../helpers/fetchWebsiteOptions";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import HeightIcon from '@mui/icons-material/Height';
+// import HeightIcon from '@mui/icons-material/Height';
 
 export const AdminPanelHeader = ({
     setSelectedWebsite,
@@ -38,7 +38,8 @@ export const AdminPanelHeader = ({
                         disableFuture
                         disabled={allTime}
                     />
-                    <HeightIcon sx={{ transform: "rotate(90deg)" }} />
+                    <Typography>-</Typography>
+                    {/* <HeightIcon sx={{ transform: "rotate(90deg)" }} /> */}
                     <DatePicker
                         label="End Date"
                         value={endDate}
