@@ -3,6 +3,7 @@ import ShowHistoryPage from "./components/ShowHistoryPage";
 import AdminPanel from "./pages/admin";
 import Raghib from "./pages/Raghib";
 import Single from "./pages/Single";
+
 function App() {
   const [isShowingPanel, setIsShowingPanel] = useState(false);
 
@@ -15,8 +16,8 @@ function App() {
       {/* {!isShowingPanel && <ShowHistoryPage onClick={onShowHistory} />}
       {isShowingPanel && <AdminPanel />} */}
       {/* <Raghib /> */}
-<Single/>
-      </div>
+      <Single />
+    </div>
   );
 }
 

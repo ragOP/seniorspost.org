@@ -88,7 +88,7 @@ export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoadin
             spacing={2}
             direction="column"
             alignItems="center"
-            sx={{ width: "60%" }}
+            sx={{ width: "100%" }}
         >
             {isLoading ? (
                 <CircularProgress />
@@ -98,8 +98,22 @@ export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoadin
                 <Select
                     value={selectedOption}
                     onChange={handleChange}
-                    sx={{ width: "100%" }}
-                    variant="standard"
+                    // sx={{ width: "100%", border: "1px solid #fff", outline: "1px solid #fff" }}
+                    variant="outlined"
+                    sx={{
+                        width: "100%",
+                        // backgroundColor: "white",
+                        color: "#fff",
+                        "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                        },
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "white",
+                        },
+                    }}
                     displayEmpty
                 >
                     <MenuItem value="" disabled>
