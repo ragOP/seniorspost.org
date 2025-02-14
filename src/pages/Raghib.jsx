@@ -121,7 +121,19 @@ const barChartsParams = {
   height: 300,
   sx: {
     '& .MuiTypography-root': {
-      color: '#fff', // Ensure the text color for any typography is white
+      color: 'white', // Set all typography to red
+    },
+    '& .MuiChartsAxis-root text': {
+      fill: 'white !important', // Force x and y-axis text to red
+    },
+    '& .MuiChartsAxis-tickLabel': {
+      fill: 'white !important', // Ensure tick labels are red
+    },
+    '& .MuiChartsAxis-line': {
+      stroke: 'white !important', // Ensure x and y-axis lines are red
+    },
+    '& .MuiChartsAxis-tick': {
+      stroke: 'white !important', // Ensure tick marks are red
     },
   },
 };
@@ -185,51 +197,22 @@ export const NavigationAnalytics = ({ itemData, setItemData, setAxisData, axisDa
         <div style={{
           backgroundColor: '#141414',
           borderRadius: '10px',
-          height: '20rem',
+          height: '22rem',
           width: '100%',
           color: 'white',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}>
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={{ xs: 0, md: 4 }}
-            sx={{ width: '80%' }}
           >
-            <Box sx={{ flexGrow: 1 }}>
-              <BarChart
-                {...barChartsParams}
-                onItemClick={(event, d) => setItemData(d)}
-                onAxisClick={(event, d) => setAxisData(d)}
-              />
-            </Box>
-
-            <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography>Click on the chart</Typography>
-                <IconButton
-                  aria-label="reset"
-                  size="small"
-                  onClick={() => {
-                    setItemData(null);
-                    setAxisData(null);
-                  }}
-                >
-                  {/* <UndoOutlinedIcon fontSize="small" /> */}
-                </IconButton>
-              </Box>
-              <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-                {`// Data from item click
-${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
-
-// Data from axis click
-${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
-              </pre>
-            </Stack>
+            <BarChart
+              {...barChartsParams}
+              onItemClick={(event, d) => setItemData(d)}
+              onAxisClick={(event, d) => setAxisData(d)}
+            />
           </Stack>
         </div>
       </Grid2>
@@ -238,7 +221,7 @@ ${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}
         <div style={{
           backgroundColor: '#141414',
           borderRadius: '10px',
-          height: '20rem',
+          height: '22rem',
           width: '100%',
           color: 'white',
           display: "flex",
@@ -263,7 +246,7 @@ ${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}
         <div style={{
           backgroundColor: '#141414',
           borderRadius: '10px',
-          height: '20rem',
+          height: '22rem',
           width: '100%',
           color: 'white',
           display: "flex",
@@ -272,10 +255,7 @@ ${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}
         }}>
           <center>Top Pages</center>
           <ul style={{ listStyleType: 'none', padding: 0 }}>
-
-
             <LineChart {...topPagesData} />
-
           </ul>
         </div>
       </Grid2>
@@ -285,135 +265,23 @@ ${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}
         <div style={{
           backgroundColor: '#141414',
           borderRadius: '10px',
-          height: '20rem',
+          height: '22rem',
           width: '100%',
-          color: 'white',
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-        }}>
-          <Button
-            colorMode="light"
-            kind="elevated"
-            onClick={function noRefCheck() { }}
-            size="big"
-            style={{
-              margin: '10px',
-              // Control button padding for better spacing
-              height: 'auto', // Ensure the height is auto to fit content
-            }}
-          >
-            Question 1 (Yes)
-          </Button>
-          <Button
-            colorMode="light"
-            kind="elevated"
-            onClick={function noRefCheck() { }}
-            size="big"
-            style={{
-              margin: '10px',
-              // Control button padding for better spacing
-              height: 'auto', // Ensure the height is auto to fit content
-            }}
-          >
-            Question 1 (Yes)
-          </Button>
-          <Button
-            colorMode="light"
-            kind="elevated"
-            onClick={function noRefCheck() { }}
-            size="big"
-            style={{
-              margin: '10px',
-              // Control button padding for better spacing
-              height: 'auto', // Ensure the height is auto to fit content
-            }}
-          >
-            Question 1 (Yes)
-          </Button>
-          <Button
-            colorMode="light"
-            kind="elevated"
-            onClick={function noRefCheck() { }}
-            size="big"
-            style={{
-              margin: '10px',
-              // Control button padding for better spacing
-              height: 'auto', // Ensure the height is auto to fit content
-            }}
-          >
-            Question 1 (Yes)
-          </Button>
-          <Button
-            colorMode="light"
-            kind="elevated"
-            onClick={function noRefCheck() { }}
-            size="big"
-            style={{
-              margin: '120px',
-              // Control button padding for better spacing
-              height: 'auto', // Ensure the height is auto to fit content
-            }}
-          >
-            Call (123232)
-          </Button>
-
-        </div>
-      </Grid2>
-
-      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
-
-        <div style={{
-          backgroundColor: '#141414',
-          borderRadius: '10px',
-          height: '20rem',
-          width: '100%',
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center", 
           color: 'white',
         }}>
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={{ xs: 0, md: 4 }}
-            sx={{ width: '80%' }}
+            sx={{ width: '100%' }}
           >
-            <Box sx={{ flexGrow: 1 }}>
-              <BarChart
-                {...barChartsParams}
-                onItemClick={(event, d) => setItemData(d)}
-                onAxisClick={(event, d) => setAxisData(d)}
-              />
-            </Box>
-
-            <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography>Bounce rate </Typography>
-                <IconButton
-                  aria-label="reset"
-                  size="small"
-                  onClick={() => {
-                    setItemData(null);
-                    setAxisData(null);
-                  }}
-                >
-                  {/* <UndoOutlinedIcon fontSize="small" /> */}
-                </IconButton>
-              </Box>
-              <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-                {`// Data from item click
-${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
-
-// Data from axis click
-${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
-              </pre>
-            </Stack>
+            <BarChart
+              {...barChartsParams}
+              onItemClick={(event, d) => setItemData(d)}
+              onAxisClick={(event, d) => setAxisData(d)}
+            />
           </Stack>
         </div>
       </Grid2>

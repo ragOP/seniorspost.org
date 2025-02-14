@@ -14,7 +14,7 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { createTheme, Grid2, MenuItem, Select, ThemeProvider } from "@mui/material";
+import { createTheme, Grid2, MenuItem, Select, ThemeProvider, useMediaQuery } from "@mui/material";
 import { ScoreMeter } from '@cred/neopop-web/lib/components';
 import { colorPalette, FontVariant } from '@cred/neopop-web/lib/primitives';
 import { AdminPanelWebsite } from './admin/components/AdminPanelHeader.jsx';
@@ -152,7 +152,19 @@ const barChartsParams = {
   height: 300,
   sx: {
     '& .MuiTypography-root': {
-      color: '#fff', // Ensure the text color for any typography is white
+      color: 'white', // Set all typography to red
+    },
+    '& .MuiChartsAxis-root text': {
+      fill: 'white !important', // Force x and y-axis text to red
+    },
+    '& .MuiChartsAxis-tickLabel': {
+      fill: 'white !important', // Ensure tick labels are red
+    },
+    '& .MuiChartsAxis-line': {
+      stroke: 'white !important', // Ensure x and y-axis lines are red
+    },
+    '& .MuiChartsAxis-tick': {
+      stroke: 'white !important', // Ensure tick marks are red
     },
   },
 };
@@ -198,7 +210,7 @@ const Single = () => {
         }}
       > */}
       <Grid2 container spacing={2} sx={{
-        margin: "1rem", 
+        margin: "1rem",
         padding: "1rem",
         backgroundColor: '#141414',
         borderRadius: "1rem",
@@ -274,6 +286,8 @@ export default Single;
 
 
 export const ButtonCallDetails = () => {
+
+  const isMobile = useMediaQuery('(max-width: 600px)');
   return (
     <div
       style={{
@@ -281,11 +295,11 @@ export const ButtonCallDetails = () => {
         borderRadius: '10px',
         color: 'white',
         display: "flex",
-        height: "33rem",
+        height: isMobile ? "20rem" : "33rem",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        padding: "4rem 1rem",
+        padding: isMobile ? "1rem" : "4rem 1rem",
       }}
     >
       <Stack direction="row" alignItems="center" justifyContent="center" sx={{ flexWrap: 'wrap' }}>
@@ -495,38 +509,13 @@ export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) 
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={{ xs: 0, md: 4 }}
-            sx={{ width: '80%' }}
+            sx={{ width: '100%' }}
           >
-            <Box sx={{ flexGrow: 1 }}>
-              <BarChart
-                {...barChartsParams}
-                onItemClick={(event, d) => setItemData(d)}
-                onAxisClick={(event, d) => setAxisData(d)}
-              />
-            </Box>
-
-            <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}
-              >
-                <Typography>Bounce rate </Typography>
-                <IconButton
-                  aria-label="reset"
-                  size="small"
-                  onClick={() => {
-                    setItemData(null);
-                    setAxisData(null);
-                  }}
-                >
-                  {/* <UndoOutlinedIcon fontSize="small" /> */}
-                </IconButton>
-              </Box>
-
-            </Stack>
+            <BarChart
+              {...barChartsParams}
+              onItemClick={(event, d) => setItemData(d)}
+              onAxisClick={(event, d) => setAxisData(d)}
+            />
           </Stack>
         </div>
       </Grid2>
