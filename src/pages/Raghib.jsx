@@ -8,9 +8,10 @@ import IconButton from '@mui/material/IconButton';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { color } from 'framer-motion';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { desktopOS, valueFormatter ,mobileOS}  from './webUsageStats.ts';
-import TodoApp from   '../pages/admin/Todo.jsx'
+import { desktopOS, valueFormatter, mobileOS } from './webUsageStats.ts';
+import TodoApp from '../pages/admin/Todo.jsx'
 import { LineChart } from '@mui/x-charts/LineChart';
+import { Grid2 } from '@mui/material';
 
 const topPagesData = {
   series: [
@@ -129,266 +130,293 @@ const AdminPanel = () => {
   const [itemData, setItemData] = React.useState();
   const [axisData, setAxisData] = React.useState();
   return (
-    <div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderTopLeftRadius: '100px', 
-        borderTopRightRadius: '100px', 
-        padding: '25px', 
-        marginTop: '10px', 
-        color: 'white',
-       
-      }}>
-        Navigation Bar
-      </div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '300px', 
-      width: '500px', 
-        marginLeft: '420px', 
-        marginTop: '10px',
-        color: 'white',
-        
-       
-      }}>
-       <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={{ xs: 0, md: 4 }}
-      sx={{ width: '80%' }}
-    >
-      <Box sx={{ flexGrow: 1 }}>
-        <BarChart
-          {...barChartsParams}
-          onItemClick={(event, d) => setItemData(d)}
-          onAxisClick={(event, d) => setAxisData(d)}
-        />
-      </Box>
-
-      <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
+    <div style={{ height: '100vh', maxHeight: "100vh", backgroundColor: '#000', overflowY: "auto" }}>
+      <div
+        style={{
+          backgroundColor: '#141414',
+          borderRadius: "1rem",
+          margin: "1rem",
+          padding: '25px',
+          marginTop: '10px',
+          color: 'white',
+        }}
+      >
+        <Typography
+          color="#F08D32"
+          fontSize={20}
+          fontType="serif-heading"
+          fontWeight={700}
         >
-          <Typography>Click on the chart</Typography>
-          <IconButton
-            aria-label="reset"
-            size="small"
-            onClick={() => {
-              setItemData(null);
-              setAxisData(null);
+          Navigation Bar
+        </Typography>
+      </div>
+
+
+      <Grid2 container spacing={2} sx={{ margin: "1rem", }}>
+        <Grid2 item size={{ lg: 4, md: 12, sm: 12, xs: 12 }}>
+          <div
+            style={{
+              backgroundColor: '#141414',
+              borderRadius: "1rem",
+              padding: '1rem',
+              marginTop: '10px',
+              color: 'white',
             }}
           >
-            {/* <UndoOutlinedIcon fontSize="small" /> */}
-          </IconButton>
-        </Box>
-        <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-          {`// Data from item click
-${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
-
-// Data from axis click
-${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
-        </pre>
-      </Stack>
-    </Stack>
-      </div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '300px', 
-      width: '500px', 
-        marginLeft: '950px', 
-        marginTop: '-300px',
-        color: 'white',
-        
-       
-      }}>
-   <PieChart
-      series={[
-        {
-          data: mobileOS,
-          highlightScope: { fade: 'global', highlight: 'item' },
-          faded: { innerRadius: 30, additionalRadius: -30, color: 'red' },
-          valueFormatter,
-        },
-      ]}
-      height={200}
-    />
-      </div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '300px', 
-      width: '500px', 
-        marginLeft: '420px', 
-        marginTop: '10px',
-        color: 'white',
-        
-       
-      }}>
-    kia sitam ki dono hi mar jayngey
-    <TodoApp />
-      </div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '300px', 
-      width: '500px', 
-        marginLeft: '950px', 
-        marginTop: '-300px',
-        color: 'white',
-        
-       
-      }}>
- <center>Top Pages</center>
-<ul style={{ listStyleType: 'none', padding: 0 }}>
-
-
-  <LineChart {...topPagesData} />
-  
-</ul>
-      </div>
-    
-
-
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '600px', 
-      width: '400px', 
-        marginTop: '-615px', 
-        color: 'white',
-        
-       
-      }}>
-       <Button
-    colorMode="light"
-    kind="elevated"
-    onClick={function noRefCheck() {}}
-    size="big"
-    style={{
-      margin:'10px',
-      // Control button padding for better spacing
-      height: 'auto', // Ensure the height is auto to fit content
-    }}
-  >
-   Question 1 (Yes)
-  </Button>
-  <Button
-    colorMode="light"
-    kind="elevated"
-    onClick={function noRefCheck() {}}
-    size="big"
-    style={{
-      margin:'10px',
-      // Control button padding for better spacing
-      height: 'auto', // Ensure the height is auto to fit content
-    }}
-  >
-   Question 1 (Yes)
-  </Button>
-  <Button
-    colorMode="light"
-    kind="elevated"
-    onClick={function noRefCheck() {}}
-    size="big"
-    style={{
-      margin:'10px',
-      // Control button padding for better spacing
-      height: 'auto', // Ensure the height is auto to fit content
-    }}
-  >
-   Question 1 (Yes)
-  </Button>
-  <Button
-    colorMode="light"
-    kind="elevated"
-    onClick={function noRefCheck() {}}
-    size="big"
-    style={{
-      margin:'10px',
-      // Control button padding for better spacing
-      height: 'auto', // Ensure the height is auto to fit content
-    }}
-  >
-   Question 1 (Yes)
-  </Button>
-  <Button
-    colorMode="light"
-    kind="elevated"
-    onClick={function noRefCheck() {}}
-    size="big"
-    style={{
-      margin:'120px',
-      // Control button padding for better spacing
-      height: 'auto', // Ensure the height is auto to fit content
-    }}
-  >
-Call (123232)
-  </Button>
-     
-      </div>
-      <div style={{ 
-        backgroundColor:'#141414' ,
-        borderRadius: '10px',
-      height: '300px', 
-      width: '500px', 
-        marginLeft: '420px', 
-        marginTop: '10px',
-        color: 'white',
-        
-       
-      }}>
-       <Stack
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={{ xs: 0, md: 4 }}
-      sx={{ width: '80%' }}
-    >
-      <Box sx={{ flexGrow: 1 }}>
-        <BarChart
-          {...barChartsParams}
-          onItemClick={(event, d) => setItemData(d)}
-          onAxisClick={(event, d) => setAxisData(d)}
-        />
-      </Box>
-
-      <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          <Typography>Bounce rate </Typography>
-          <IconButton
-            aria-label="reset"
-            size="small"
-            onClick={() => {
-              setItemData(null);
-              setAxisData(null);
-            }}
-          >
-            {/* <UndoOutlinedIcon fontSize="small" /> */}
-          </IconButton>
-        </Box>
-        <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
-          {`// Data from item click
-${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
-
-// Data from axis click
-${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
-        </pre>
-      </Stack>
-    </Stack>
-      </div>
-
-    
+            <TodoApp />
+          </div>
+        </Grid2>
+        <Grid2 item size={{ lg: 8, md: 12, sm: 12, xs: 12 }}>
+          <NavigationAnalytics />
+        </Grid2>
+      </Grid2>
     </div>
   );
 }
 
 export default AdminPanel;
+
+
+export const NavigationAnalytics = ({ itemData, setItemData, setAxisData, axisData }) => {
+  return (
+
+    <Grid2 container spacing={2}>
+      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
+        <div style={{
+          backgroundColor: '#141414',
+          borderRadius: '10px',
+          height: '20rem',
+          width: '100%',
+          color: 'white',
+        }}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={{ xs: 0, md: 4 }}
+            sx={{ width: '80%' }}
+          >
+            <Box sx={{ flexGrow: 1 }}>
+              <BarChart
+                {...barChartsParams}
+                onItemClick={(event, d) => setItemData(d)}
+                onAxisClick={(event, d) => setAxisData(d)}
+              />
+            </Box>
+
+            <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography>Click on the chart</Typography>
+                <IconButton
+                  aria-label="reset"
+                  size="small"
+                  onClick={() => {
+                    setItemData(null);
+                    setAxisData(null);
+                  }}
+                >
+                  {/* <UndoOutlinedIcon fontSize="small" /> */}
+                </IconButton>
+              </Box>
+              <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
+                {`// Data from item click
+${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
+
+// Data from axis click
+${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
+              </pre>
+            </Stack>
+          </Stack>
+        </div>
+      </Grid2>
+
+      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
+        <div style={{
+          backgroundColor: '#141414',
+          borderRadius: '10px',
+          height: '20rem',
+          width: '100%',
+          color: 'white',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <PieChart
+            series={[
+              {
+                data: mobileOS,
+                highlightScope: { fade: 'global', highlight: 'item' },
+                faded: { innerRadius: 30, additionalRadius: -30, color: 'red' },
+                valueFormatter,
+              },
+            ]}
+            height={200}
+          />
+        </div>
+      </Grid2>
+
+      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
+        <div style={{
+          backgroundColor: '#141414',
+          borderRadius: '10px',
+          height: '20rem',
+          width: '100%',
+          color: 'white',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <center>Top Pages</center>
+          <ul style={{ listStyleType: 'none', padding: 0 }}>
+
+
+            <LineChart {...topPagesData} />
+
+          </ul>
+        </div>
+      </Grid2>
+
+      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
+
+        <div style={{
+          backgroundColor: '#141414',
+          borderRadius: '10px',
+          height: '20rem',
+          width: '100%',
+          color: 'white',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}>
+          <Button
+            colorMode="light"
+            kind="elevated"
+            onClick={function noRefCheck() { }}
+            size="big"
+            style={{
+              margin: '10px',
+              // Control button padding for better spacing
+              height: 'auto', // Ensure the height is auto to fit content
+            }}
+          >
+            Question 1 (Yes)
+          </Button>
+          <Button
+            colorMode="light"
+            kind="elevated"
+            onClick={function noRefCheck() { }}
+            size="big"
+            style={{
+              margin: '10px',
+              // Control button padding for better spacing
+              height: 'auto', // Ensure the height is auto to fit content
+            }}
+          >
+            Question 1 (Yes)
+          </Button>
+          <Button
+            colorMode="light"
+            kind="elevated"
+            onClick={function noRefCheck() { }}
+            size="big"
+            style={{
+              margin: '10px',
+              // Control button padding for better spacing
+              height: 'auto', // Ensure the height is auto to fit content
+            }}
+          >
+            Question 1 (Yes)
+          </Button>
+          <Button
+            colorMode="light"
+            kind="elevated"
+            onClick={function noRefCheck() { }}
+            size="big"
+            style={{
+              margin: '10px',
+              // Control button padding for better spacing
+              height: 'auto', // Ensure the height is auto to fit content
+            }}
+          >
+            Question 1 (Yes)
+          </Button>
+          <Button
+            colorMode="light"
+            kind="elevated"
+            onClick={function noRefCheck() { }}
+            size="big"
+            style={{
+              margin: '120px',
+              // Control button padding for better spacing
+              height: 'auto', // Ensure the height is auto to fit content
+            }}
+          >
+            Call (123232)
+          </Button>
+
+        </div>
+      </Grid2>
+
+      <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
+
+        <div style={{
+          backgroundColor: '#141414',
+          borderRadius: '10px',
+          height: '20rem',
+          width: '100%',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center", 
+          color: 'white',
+        }}>
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={{ xs: 0, md: 4 }}
+            sx={{ width: '80%' }}
+          >
+            <Box sx={{ flexGrow: 1 }}>
+              <BarChart
+                {...barChartsParams}
+                onItemClick={(event, d) => setItemData(d)}
+                onAxisClick={(event, d) => setAxisData(d)}
+              />
+            </Box>
+
+            <Stack direction="column" sx={{ width: { xs: '100%', md: '40%' } }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography>Bounce rate </Typography>
+                <IconButton
+                  aria-label="reset"
+                  size="small"
+                  onClick={() => {
+                    setItemData(null);
+                    setAxisData(null);
+                  }}
+                >
+                  {/* <UndoOutlinedIcon fontSize="small" /> */}
+                </IconButton>
+              </Box>
+              <pre style={{ backgroundColor: '#333', color: '#fff', padding: '10px', borderRadius: '5px' }}>
+                {`// Data from item click
+${itemData ? JSON.stringify(itemData, null, 2) : '// The data will appear here'}
+
+// Data from axis click
+${axisData ? JSON.stringify(axisData, null, 2) : '// The data will appear here'}`}
+              </pre>
+            </Stack>
+          </Stack>
+        </div>
+      </Grid2>
+    </Grid2>
+  )
+}
