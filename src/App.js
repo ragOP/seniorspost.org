@@ -15,8 +15,8 @@ function App() {
     <div>
       {/* {!isShowingPanel && <ShowHistoryPage onClick={onShowHistory} />}
       {isShowingPanel && <AdminPanel />} */}
-      {/* <Raghib /> */}
-      <Single />
+      <Raghib />
+      {/* <Single /> */}
     </div>
   );
 }

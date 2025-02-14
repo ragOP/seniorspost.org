@@ -188,25 +188,26 @@ const AdminPanel = () => {
 
 export default AdminPanel;
 
-
 export const NavigationAnalytics = ({ itemData, setItemData, setAxisData, axisData }) => {
   return (
-
     <Grid2 container spacing={2}>
       <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
-        <div style={{
-          backgroundColor: '#141414',
-          borderRadius: '10px',
-          height: '22rem',
-          width: '100%',
-          color: 'white',
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}>
+        <div
+          style={{
+            backgroundColor: '#141414',
+            borderRadius: '10px',
+            height: '22rem',
+            width: '100%',
+            color: 'white',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={{ xs: 0, md: 4 }}
+            sx={{ width: '100%' }}
           >
             <BarChart
               {...barChartsParams}
@@ -253,10 +254,7 @@ export const NavigationAnalytics = ({ itemData, setItemData, setAxisData, axisDa
           alignItems: "center",
           justifyContent: "center",
         }}>
-          <center>Top Pages</center>
-          <ul style={{ listStyleType: 'none', padding: 0 }}>
-            <LineChart {...topPagesData} />
-          </ul>
+          <LineChart {...topPagesData} />
         </div>
       </Grid2>
 
