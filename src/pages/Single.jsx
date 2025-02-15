@@ -363,7 +363,6 @@ export const PageAnalytics = ({ websiteAnalyticsData }) => {
         data: barGraphData.map((d) => d.value),
         label: "Conversion %",
         color: "white",
-
       }
     ],
     xAxis: [
@@ -407,6 +406,12 @@ export const PageAnalytics = ({ websiteAnalyticsData }) => {
       '& .MuiChartsBar-root .MuiChartsBar-label': {
         color: 'white !important', // Ensure bar labels are white
       },
+      '& .MuiChartsLegend-root text': {
+        fill: 'white !important',
+      },
+      '& .MuiChartsLegend-series text': {
+        fill: 'white !important',
+      },
     },
   };
 
@@ -434,7 +439,9 @@ export const PageAnalytics = ({ websiteAnalyticsData }) => {
             <Box sx={{ flexGrow: 1 }}>
               <BarChart
                 {...barChartsParams}
-
+                slots={{
+                  axisLabel: <h1>Hello</h1>
+                }}
               />
             </Box>
           </Stack>
@@ -460,6 +467,14 @@ export const PageAnalytics = ({ websiteAnalyticsData }) => {
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'red' },
               },
             ]}
+            sx={{
+              '& .MuiChartsLegend-root text': {
+                fill: 'white !important',
+              },
+              '& .MuiChartsLegend-series text': {
+                fill: 'white !important',
+              },
+            }}
             height={200}
           />
         </div>

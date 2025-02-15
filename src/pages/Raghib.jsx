@@ -130,6 +130,7 @@ export const NavigationAnalytics = ({ allWebsites }) => {
         },
       },
     ],
+
     yAxis: [
       {
         tick: {
@@ -158,6 +159,12 @@ export const NavigationAnalytics = ({ allWebsites }) => {
       },
       '& .MuiChartsBar-root .MuiChartsBar-label': {
         color: 'white !important', // Ensure bar labels are white
+      },
+      '& .MuiChartsLegend-root text': {
+        fill: 'white !important',
+      },
+      '& .MuiChartsLegend-series text': {
+        fill: 'white !important',
       },
     },
   };
@@ -208,6 +215,12 @@ export const NavigationAnalytics = ({ allWebsites }) => {
       },
       '& .MuiChartsAxis-tick': {
         stroke: 'white !important', // Ensure tick marks are red
+      },
+      '& .MuiChartsLegend-root text': {
+        fill: 'white !important',
+      },
+      '& .MuiChartsLegend-series text': {
+        fill: 'white !important',
       },
     },
   };
@@ -260,6 +273,14 @@ export const NavigationAnalytics = ({ allWebsites }) => {
               },
             ]}
             height={200}
+            sx={{
+              '& .MuiChartsLegend-root text': {
+                fill: 'white !important',
+              },
+              '& .MuiChartsLegend-series text': {
+                fill: 'white !important',
+              },
+            }}
           />
         </div>
       </Grid2>
@@ -275,7 +296,9 @@ export const NavigationAnalytics = ({ allWebsites }) => {
           alignItems: "center",
           justifyContent: "center",
         }}>
-          <LineChart {...topPagesData} />
+          <LineChart
+            {...topPagesData}
+          />
         </div>
       </Grid2>
 
