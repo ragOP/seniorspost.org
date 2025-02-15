@@ -69,9 +69,17 @@ export const AdminPanelHeader = ({
 };
 
 
-export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoading, error }) => {
+export const AdminPanelWebsite = ({ setSelectedWebsite }) => {
     const [selectedOption, setSelectedOption] = useState("");
 
+    const {
+        data: websiteOptions,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["websiteOptions"],
+        queryFn: fetchWebsiteOptions,
+    });
 
     const handleChange = (event) => {
         const selectedWebsite = websiteOptions.data.find(
@@ -81,7 +89,7 @@ export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoadin
         setSelectedWebsite(selectedWebsite);
     };
 
-    console.log(">>", websiteOptions);
+    // console.log(">>", websiteOptions);
 
     return (
         <Stack
@@ -90,46 +98,43 @@ export const AdminPanelWebsite = ({ setSelectedWebsite, websiteOptions, isLoadin
             alignItems="center"
             sx={{ width: "100%" }}
         >
-            {isLoading ? (
-                <CircularProgress />
-            ) : error ? (
-                <div>Error loading website options</div>
-            ) : (
-                <Select
-                    value={selectedOption}
-                    onChange={handleChange}
-                    // sx={{ width: "100%", border: "1px solid #fff", outline: "1px solid #fff" }}
-                    variant="outlined"
-                    sx={{
-                        width: "100%",
-                        // backgroundColor: "white",
-                        color: "#fff",
-                        "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "white",
-                        },
-                        "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "white",
-                        },
-                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "white",
-                        },
-                    }}
-                    displayEmpty
-                >
-                    <MenuItem value="" disabled>
-                        Select a website
-                    </MenuItem>
-                    {websiteOptions?.data &&
-                        websiteOptions?.data?.length > 0 &&
-                        websiteOptions.data.map((option) => (
-                            <MenuItem key={option.websiteId} value={option.websiteId}>
-                                {option.websiteName
-                                    ? option.websiteName
-                                    : `Website ${option.websiteId}`}
-                            </MenuItem>
-                        ))}
-                </Select>
-            )}
+            <Select
+                value={selectedOption}
+                onChange={handleChange}
+                // sx={{ width: "100%", border: "1px solid #fff", outline: "1px solid #fff" }}
+                variant="outlined"
+                sx={{
+                    width: "100%",
+                    // backgroundColor: "white",
+                    color: "#fff",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "white",
+                    },
+                }}
+                displayEmpty
+            >
+                <MenuItem value="" disabled>
+                    {isLoading ? "Loading websites..." : "Select a website"}
+                </MenuItem>
+                {!isLoading &&
+                    websiteOptions?.data?.length > 0 &&
+                    websiteOptions.data.map((option) => (
+                        <MenuItem key={option.websiteId} value={option.websiteId}>
+                            {option.websiteName
+                                ? option.websiteName
+                                : `Website ${option.websiteId}`}
+                        </MenuItem>
+                    ))}
+                {!isLoading && websiteOptions?.data?.length === 0 && (
+                    <MenuItem disabled>No websites available</MenuItem>
+                )}
+            </Select>
         </Stack>
     );
 };

@@ -1,7 +1,7 @@
+import { BACKEND_URL } from "../../../utils";
+
 export const fetchWebsiteOptions = async () => {
-  const response = await fetch(
-    "https://phonepe-be.onrender.com/api/admin/get-all-website-views"
-  );
+  const response = await fetch(`${BACKEND_URL}/api/analytics/all-website-views`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

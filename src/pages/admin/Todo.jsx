@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BACKEND_URL } from '../../utils';
 
 const TodoApp = () => {
   const [todoText, setTodoText] = useState('');
@@ -8,7 +9,7 @@ const TodoApp = () => {
 
   const fetchTodos = async () => {
     try {
-      const response = await axios.get('https://phonepe-be.onrender.com/api/todo'); // Adjust the URL as necessary
+      const response = await axios.get(`${BACKEND_URL}/api/todo`); // Adjust the URL as necessary
       console.log("response", response.data.data)
       setTodos(response.data.data);  // Set the todos state with the fetched data
     } catch (error) {
@@ -26,7 +27,7 @@ const TodoApp = () => {
         };
 
         // Post the new todo to the backend
-        await axios.post('https://phonepe-be.onrender.com/api/todo', todoData);
+        await axios.post(`${BACKEND_URL}/api/todo`, todoData);
 
         // Clear the input field
         setTodoText('');
@@ -55,6 +56,7 @@ const TodoApp = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '10px',
+          minHeight: "75vh",
           maxHeight: '75vh', // Limit the height so the list scrolls internally
         }}
         ref={(el) => {
@@ -90,7 +92,7 @@ const TodoApp = () => {
           style={{
             padding: '10px',
             borderRadius: '5px',
-            width: '80%',
+            width: '90%',
             border: 'none',
             outline: 'none',
             backgroundColor: '#2c2c2c',

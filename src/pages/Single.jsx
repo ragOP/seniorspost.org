@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-import { Button } from '@cred/neopop-web/lib/components';
+import { Button, showToast } from '@cred/neopop-web/lib/components';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-// import UndoOutlinedIcon from '@mui/icons-material/UndoOutlined';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { color } from 'framer-motion';
 import { PieChart } from '@mui/x-charts/PieChart';
-import { desktopOS, valueFormatter, mobileOS } from './webUsageStats.ts';
-import TodoApp from '../pages/admin/Todo.jsx'
-import { LineChart } from '@mui/x-charts/LineChart';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { createTheme, Grid2, MenuItem, Select, ThemeProvider, useMediaQuery } from "@mui/material";
+import { createTheme, Grid2, ThemeProvider, useMediaQuery } from "@mui/material";
 import { ScoreMeter } from '@cred/neopop-web/lib/components';
-import { colorPalette, FontVariant } from '@cred/neopop-web/lib/primitives';
 import { AdminPanelWebsite } from './admin/components/AdminPanelHeader.jsx';
+import { mobileOS, valueFormatter } from './admin/webUsageStats.js';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { set } from 'date-fns';
+import { BACKEND_URL } from '../utils/index.js';
 
 const theme = createTheme({
   components: {
@@ -44,136 +43,78 @@ const theme = createTheme({
     },
   },
 });
-const topPagesData = {
-  series: [
-    {
-      id: 'top-pages',
-      data: [10, 20, 30, 40, 50],
-      label: 'Page Views',
-      color: 'white',
-    },
-  ],
-  xAxis: [
-    {
-      data: ['food allowance', 'engmedts22', 'hackers313', 'Pagecdcd 4', 'Page 5'],
-      scaleType: 'band',
-      id: 'axis1',
-      tick: {
-        style: {
-          fill: 'white', // Set x-axis label color to red
-        },
-      },
-    },
-  ],
-  yAxis: [
-    {
-      tick: {
-        style: {
-          fill: 'white', // Set y-axis label color to red
-        },
-      },
-    },
-  ],
-  height: 200,
-  sx: {
-    '& .MuiTypography-root': {
-      color: 'white', // Set all typography to red
-    },
-    '& .MuiChartsAxis-root text': {
-      fill: 'white !important', // Force x and y-axis text to red
-    },
-    '& .MuiChartsAxis-tickLabel': {
-      fill: 'white !important', // Ensure tick labels are red
-    },
-    '& .MuiChartsAxis-line': {
-      stroke: 'white !important', // Ensure x and y-axis lines are red
-    },
-    '& .MuiChartsAxis-tick': {
-      stroke: 'white !important', // Ensure tick marks are red
-    },
-  },
-};
 
-
-
-// import { HighlightedCode } from '@mui/docs/HighlightedCode';
-
-const barChartsParams = {
-  series: [
-    {
-      id: 'series-1',
-      data: [3, 4, 1, 6, 5],
-      label: 'A',
-      stack: 'total',
-      highlightScope: {
-        highlight: 'item',
-      },
-      color: 'green',
-    },
-    {
-      id: 'series-2',
-      data: [4, 3, 1, 5, 28],
-      label: 'B',
-      stack: 'total',
-      highlightScope: {
-        highlight: 'item',
-      },
-    },
-    {
-      id: 'series-3',
-      data: [4, 2, 5, 4, 1],
-      label: 'C',
-      highlightScope: {
-        highlight: 'item',
-      },
-    },
-  ],
-  xAxis: [
-    {
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-      scaleType: 'band',
-      id: 'axis1',
-      tick: {
-        style: {
-          fill: '#fff', // Change x-axis label color to white
-        },
-      },
-    },
-  ],
-  yAxis: [
-    {
-      tick: {
-        style: {
-          fill: '#fff', // Change y-axis label color to white
-        },
-      },
-    },
-  ],
-  height: 300,
-  sx: {
-    '& .MuiTypography-root': {
-      color: 'white', // Set all typography to red
-    },
-    '& .MuiChartsAxis-root text': {
-      fill: 'white !important', // Force x and y-axis text to red
-    },
-    '& .MuiChartsAxis-tickLabel': {
-      fill: 'white !important', // Ensure tick labels are red
-    },
-    '& .MuiChartsAxis-line': {
-      stroke: 'white !important', // Ensure x and y-axis lines are red
-    },
-    '& .MuiChartsAxis-tick': {
-      stroke: 'white !important', // Ensure tick marks are red
-    },
-  },
-};
 
 const Single = () => {
-  const [itemData, setItemData] = React.useState();
-  const [axisData, setAxisData] = React.useState();
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [selectedWebsite, setSelectedWebsite] = useState(null);
+  const [isSubmittingData, setIsSubmittingData] = useState(false);
+  const [websiteAnalyticsData, setWebsiteAnalyticsData] = useState(null);
+
+  const onSelectEndDate = (newValue) => {
+    if (dayjs(startDate).isSame(dayjs(newValue), 'day')) {
+      showToast("Start and end date cannot be same", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+    setEndDate(newValue)
+  }
+
+  const onSelectStartDate = (newValue) => {
+    setStartDate(newValue)
+    setEndDate(new Date(newValue.getTime() + 24 * 60 * 60 * 1000));
+  }
+
+  const onSubmit = async ({ isAllTime = false }) => {
+
+    if (isSubmittingData) {
+      showToast("Please wait for the previous request to complete", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+
+    if (!selectedWebsite) {
+      showToast("Please select website", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+
+    if (!isAllTime && !startDate) {
+      showToast("Please select start date", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+
+    if (!isAllTime && !endDate) {
+      showToast("Please select end date", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+    console.log(">>", isAllTime, startDate, endDate)
+    if (!isAllTime && dayjs(startDate).isSame(dayjs(endDate), 'day')) {
+      showToast("Start date and end date should not be same", { type: "error", autoCloseTime: 5000 });
+      return
+    }
+
+    try {
+      setIsSubmittingData(true)
+
+      const formattedStartDate = isAllTime ? null : dayjs(startDate).format("YYYY-MM-DD");
+      const formattedEndDate = isAllTime ? null : dayjs(endDate).format("YYYY-MM-DD");
+
+      const websiteId = selectedWebsite?.websiteId;
+      const url = `${BACKEND_URL}/api/analytics/single/website-view/${websiteId}`
+      const finalUrl = formattedStartDate && formattedEndDate ? `${url}?startDate=${formattedStartDate}&endDate=${formattedEndDate}` : url
+
+      const apiResponse = await axios.get(finalUrl);
+      if (apiResponse?.data?.success) {
+        const data = apiResponse?.data?.data;
+        showToast("Data fetched successfully", { type: "success", autoCloseTime: 5000 });
+        setWebsiteAnalyticsData(data)
+      }
+    } catch (error) {
+      console.log("ERROR", error)
+    } finally {
+      setIsSubmittingData(false)
+    }
+  }
 
   return (
     <div style={{ height: '100vh', maxHeight: "100vh", backgroundColor: '#000', overflowY: "auto" }}>
@@ -197,18 +138,6 @@ const Single = () => {
         </Typography>
       </div>
 
-      {/* <div
-        style={{
-          backgroundColor: '#141414',
-          borderRadius: "1rem",
-          margin: "1rem",
-          padding: "1rem",
-          marginTop: '10px',
-          color: 'white',
-          gap: "1rem",
-          // width: "100%",
-        }}
-      > */}
       <Grid2 container spacing={2} sx={{
         margin: "1rem",
         padding: "1rem",
@@ -217,7 +146,7 @@ const Single = () => {
       }}>
 
         <Grid2 item size={{ lg: 7, md: 12, sm: 12, xs: 12 }}>
-          <AdminPanelWebsite />
+          <AdminPanelWebsite setSelectedWebsite={setSelectedWebsite} />
         </Grid2>
 
         <Grid2 item size={{ lg: 3, md: 12, sm: 12, xs: 12 }}>
@@ -228,14 +157,34 @@ const Single = () => {
                   <DatePicker
                     label="Start Date"
                     value={startDate}
-                    onChange={(newValue) => setStartDate(newValue)}
+                    onChange={onSelectStartDate}
+                    format='dd/MM/yyyy'
                     renderInput={(params) => <TextField {...params} />}
+                    shouldDisableDate={(date) => date > new Date(new Date().setDate(new Date().getDate() - 1))}
                   />
                   <DatePicker
                     label="End Date"
                     value={endDate}
-                    onChange={(newValue) => setEndDate(newValue)}
-                    renderInput={(params) => <TextField {...params} />}
+                    onChange={onSelectEndDate}
+                    format='dd/MM/yyyy'
+                    renderInput={(params) =>
+                      <TextField
+                        {...params}
+                        inputProps={{ ...params.inputProps, readOnly: !startDate }}
+                      />}
+                    onOpen={() => {
+                      if (!startDate) {
+                        showToast("Please select the start date first", { type: "error", autoCloseTime: 5000 });
+                      }
+                      return
+                    }}
+                    shouldDisableDate={(date) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      const start = new Date(startDate);
+                      start.setHours(0, 0, 0, 0);
+                      return !startDate || date < start || date > today;
+                    }}
                   />
                 </Stack>
               </LocalizationProvider>
@@ -248,8 +197,9 @@ const Single = () => {
             <Button
               colorMode="light"
               kind="elevated"
-              onClick={function noRefCheck() { }}
+              onClick={() => onSubmit({ isAllTime: true })}
               size="big"
+              disabled={isSubmittingData}
             >
               All Data
             </Button>
@@ -257,25 +207,25 @@ const Single = () => {
             <Button
               colorMode="light"
               kind="elevated"
-              onClick={function noRefCheck() { }}
+              onClick={onSubmit}
               size="big"
               style={{
                 height: 'auto',
               }}
+              disabled={isSubmittingData}
             >
               Submit
             </Button>
           </Stack>
         </Grid2>
       </Grid2>
-      {/* </div> */}
 
       <Grid2 container spacing={2} sx={{ margin: "1rem", }}>
         <Grid2 item size={{ lg: 4, md: 12, sm: 12, xs: 12 }}>
-          <ButtonCallDetails />
+          <ButtonCallDetails buttonClicksData={websiteAnalyticsData?.buttonClicks} />
         </Grid2>
         <Grid2 item size={{ lg: 8, md: 12, sm: 12, xs: 12 }}>
-          <PageAnalytics />
+          <PageAnalytics websiteAnalyticsData={websiteAnalyticsData} />
         </Grid2>
       </Grid2>
     </div>
@@ -285,9 +235,16 @@ const Single = () => {
 export default Single;
 
 
-export const ButtonCallDetails = () => {
+export const ButtonCallDetails = ({ buttonClicksData }) => {
 
   const isMobile = useMediaQuery('(max-width: 600px)');
+
+  const buttonOneValue = buttonClicksData?.[1] || 0;
+  const buttonTwoValue = buttonClicksData?.[2] || 0;
+  const buttonThreeValue = buttonClicksData?.[3] || 0;
+  const buttonFourValue = buttonClicksData?.[4] || 0;
+  const buttonFiveValue = buttonClicksData?.[5] || 0;
+
   return (
     <div
       style={{
@@ -313,7 +270,7 @@ export const ButtonCallDetails = () => {
             height: 'auto',
           }}
         >
-          Q 1 (Yes) :   10
+          Q 1 (Yes) :   {buttonOneValue}
         </Button>
 
         <Button
@@ -326,7 +283,7 @@ export const ButtonCallDetails = () => {
             height: 'auto',
           }}
         >
-          Q 1 (No) :22
+          Q 1 (No) : {buttonTwoValue}
         </Button>
 
         <Button
@@ -339,7 +296,7 @@ export const ButtonCallDetails = () => {
             height: 'auto',
           }}
         >
-          Q2 (Yes) :121
+          Q2 (Yes) :{buttonThreeValue}
         </Button>
 
         <Button
@@ -352,7 +309,7 @@ export const ButtonCallDetails = () => {
             height: 'auto',
           }}
         >
-          Q2 (No) :33
+          Q2 (No) : {buttonFourValue}
         </Button>
       </Stack>
 
@@ -366,14 +323,94 @@ export const ButtonCallDetails = () => {
           height: 'auto',
         }}
       >
-        Call (123232)
+        Call ({buttonFiveValue})
       </Button>
 
     </div>
   )
 }
 
-export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) => {
+export const PageAnalytics = ({ websiteAnalyticsData }) => {
+
+  const pieChartData = [
+    {
+      label: "Conversion rate",
+      value: websiteAnalyticsData?.conversionPercentage || 0,
+    },
+    {
+      label: "Bounce rate",
+      value: websiteAnalyticsData?.bounceRate || 0,
+    },
+    {
+      label: "Views",
+      value: 100 - (websiteAnalyticsData?.conversionPercentage + websiteAnalyticsData?.bounceRate) || 0,
+    }
+  ]
+
+  const totalCalls = websiteAnalyticsData?.buttonClicks?.[5] || 0;
+
+  const last7DaysData = websiteAnalyticsData?.history || [];
+
+  const barGraphData = last7DaysData.map((data) => ({
+    label: data?.date,
+    value: data?.conversionPercentage
+  }))
+
+  const barChartsParams = {
+    series: [
+      {
+        id: "series-1",
+        data: barGraphData.map((d) => d.value),
+        label: "Conversion %",
+        color: "white",
+
+      }
+    ],
+    xAxis: [
+      {
+        data: barGraphData?.map((d) => d.label),
+        scaleType: 'band',
+        id: 'axis1',
+        tick: {
+          style: {
+            fill: '#fff',
+          },
+        },
+      },
+    ],
+    yAxis: [
+      {
+        tick: {
+          style: {
+            fill: '#fff',
+          },
+        },
+      },
+    ],
+    height: 300,
+    sx: {
+      '& .MuiTypography-root': {
+        color: 'white', // Set all typography to red
+      },
+      '& .MuiChartsAxis-root text': {
+        fill: 'white !important', // Force x and y-axis text to red
+      },
+      '& .MuiChartsAxis-tickLabel': {
+        fill: 'white !important', // Ensure tick labels are red
+      },
+      '& .MuiChartsAxis-line': {
+        stroke: 'white !important', // Ensure x and y-axis lines are red
+      },
+      '& .MuiChartsAxis-tick': {
+        stroke: 'white !important', // Ensure tick marks are red
+      },
+      '& .MuiChartsBar-root .MuiChartsBar-label': {
+        color: 'white !important', // Ensure bar labels are white
+      },
+    },
+  };
+
+  console.log(barGraphData);
   return (
     <Grid2 container spacing={2}>
       <Grid2 item size={{ lg: 6, md: 12, sm: 12, xs: 12 }}>
@@ -392,13 +429,12 @@ export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) 
           <Stack
             direction={{ xs: 'column', md: 'row' }}
             spacing={{ xs: 0, md: 4 }}
-            sx={{ width: '80%' }}
+            sx={{ width: '100%' }}
           >
             <Box sx={{ flexGrow: 1 }}>
               <BarChart
                 {...barChartsParams}
-                onItemClick={(event, d) => setItemData(d)}
-                onAxisClick={(event, d) => setAxisData(d)}
+
               />
             </Box>
           </Stack>
@@ -419,10 +455,9 @@ export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) 
           <PieChart
             series={[
               {
-                data: mobileOS,
+                data: pieChartData,
                 highlightScope: { fade: 'global', highlight: 'item' },
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'red' },
-                valueFormatter,
               },
             ]}
             height={200}
@@ -470,11 +505,11 @@ export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) 
                 scoreContainerBorder: "#0d0d0d",
               }}
               colorMode="dark"
-              lowerLimit={300}
-              reading={770}
+              lowerLimit={0}
+              reading={totalCalls}
               scoreDesc="Good"
               type="average"
-              upperLimit={900}
+              upperLimit={1000}
             />
           </div>
         </div>
@@ -513,8 +548,6 @@ export const PageAnalytics = ({ itemData, axisData, setItemData, setAxisData }) 
           >
             <BarChart
               {...barChartsParams}
-              onItemClick={(event, d) => setItemData(d)}
-              onAxisClick={(event, d) => setAxisData(d)}
             />
           </Stack>
         </div>
