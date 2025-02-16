@@ -431,7 +431,6 @@ export default function ChatApp() {
     const value = input.value.trim()
 
     if (value === "") {
-      alert("Please enter value")
       return
     }
 
