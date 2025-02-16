@@ -149,6 +149,124 @@ export const medicaidFlow = {
   }
 };
 
+export const medicareOptions = {
+  creditCardDebt: [
+    { id: "m_o_1_1", value: "yes", label: "Yes", goToStep: 2, gridValues: halfGrid },
+    { id: "m_o_1_2", value: "no", label: "No", goToStep: 3, gridValues: halfGrid },
+  ],
+  debtRange: [
+    { id: "m_o_2_1", value: "over", label: "Over $15,000", goToStep: 4, gridValues: halfGrid },
+    { id: "m_o_2_2", value: "under", label: "Under $15,000", goToStep: 5, gridValues: halfGrid },
+  ],
+  personalLoan: [
+    { id: "m_o_3_1", value: "yes", label: "Yes", goToStep: 6, gridValues: halfGrid },
+    { id: "m_o_3_2", value: "no", label: "No", goToStep: 7, gridValues: halfGrid },
+  ],
+  debtSpecificRange: [
+    { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 9, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
+  ],
+  loanAmount: [
+    { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$1700-3300", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$3300-4900", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$4900-6500", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$6500-8100", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$8100-10000", goToStep: 14, gridValues: fullGrid },
+  ],
+  creditScore: [
+    { id: "m_o_7_1", label: "Excellent (700+)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_2", label: "Good (650-700)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_3", label: "Fair (550-650)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_4", label: "Poor (550 or lower)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_5", label: "No credit", goToStep: 8, gridValues: fullGrid },
+  ],
+  nameInput: [{ id: "m_o_8_1", type: "input", goToStep: 9, label: "Type your response here", gridValues: fullGrid, fieldType: "name" }],
+  emailInput: [{ id: "m_o_8_1", type: "input", goToStep: 10, label: "Type your response here", gridValues: fullGrid, fieldType: "email" }],
+  phoneInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "phone" }],
+  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 15, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
+};
+
+export const medicareFlow = {
+  1: {
+    assistant_messages: [
+      "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
+      "Let me ask you a few more questions. Are you currently in credit card debt?"
+    ],
+    options: medicareOptions.creditCardDebt,
+  },
+  2: {
+    assistant_messages: ["I understand. Is your credit card debt over or under $15,000?"],
+    options: medicareOptions.debtRange,
+  },
+  3: {
+    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan?"],
+    options: medicareOptions.personalLoan,
+  },
+  4: {
+    assistant_messages: ["I see. Could you please specify the range of your debt?"],
+    options: medicareOptions.debtSpecificRange,
+  },
+  5: {
+    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
+    options: medicareOptions.personalLoan,
+  },
+  6: {
+    assistant_messages: ["Great! How much would you like to borrow?"],
+    options: medicareOptions.loanAmount,
+  },
+  7: {
+    assistant_messages: ["I understand. Thank you for your time. If you need any assistance in the future, please don't hesitate to reach out!."],
+  },
+  8: {
+    assistant_messages: [
+      "Thank you for providing that information. Now, let's collect some details so we can help you further.",
+      "What's your name?"
+    ],
+    options: medicareOptions.nameInput,
+  },
+  9: {
+    assistant_messages: [
+      "What's your email?"
+    ],
+    options: medicareOptions.emailInput,
+  },
+  10: {
+    assistant_messages: [
+      "What's your phone number?"
+    ],
+    options: medicareOptions.phoneInput,
+  },
+  11: {
+    assistant_messages: [
+      "What's your zip code?"
+    ],
+    options: medicareOptions.zipInput,
+  },
+  12: {
+    assistant_messages: [
+      "Thank you for providing that information. We'll be in touch shortly."
+    ],
+  },
+  13: {
+    assistant_messages: [
+      "I understand. Thank you for your time. If you need any assistance in the future, please don't hesitate to reach out!."
+    ],
+  },
+  14: {
+    assistant_messages: [
+      "Thank you. What's your credit score range?"
+    ],
+    options: medicareOptions.creditScore,
+  },
+  15: {
+    assistant_messages: [
+      "Thank you for providing your information. An agent will be in touch with you shortly!"
+    ],
+  }
+};
+
 
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -217,6 +335,26 @@ export default function ChatApp() {
 
     setIsTyping(true);
     setChat((prev) => [...prev, { id: `user-${mediacaidStep}`, content: "Medicaid", role: "user" }]);
+
+    const currentStep = medicaidFlow[mediacaidStep];
+
+    if (currentStep) {
+      await appendMessagesWithDelay(setChat, currentStep.assistant_messages, 1);
+      setMedicaidStep((prev) => prev + 1);
+
+      const options = currentStep.options;
+      setMedicaidOptions(options)
+    }
+
+    setIsTyping(false);
+  };
+
+  const handleMediCare = async () => {
+
+    setShowOptions(false);
+
+    setIsTyping(true);
+    setChat((prev) => [...prev, { id: `user-${medicareFlow}`, content: "Mediacare", role: "user" }]);
 
     const currentStep = medicaidFlow[mediacaidStep];
 
@@ -314,7 +452,7 @@ export default function ChatApp() {
         {showOptions && (
           <div className="chat-options">
             <button className="chat-option" onClick={handleInsuranceClick}>No Insurance</button>
-            <button className="chat-option">Medicare</button>
+            <button className="chat-option" onClick={handleMediCare}>Medicare</button>
             <button className="chat-option" onClick={handleMedicaidClick}>Medicaid</button>
           </div>
         )}

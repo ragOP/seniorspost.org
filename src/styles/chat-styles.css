@@ -119,10 +119,10 @@
 .chat-button,
 .chat-option {
   width: 100%; /* w-full */
-  padding-top: 0.8rem; /* py-6 */
-  padding-bottom: 0.8rem; /* py-6 */
+  padding-top: 0.9rem; /* py-6 */
+  padding-bottom: 0.9rem; /* py-6 */
   font-size: 1.125rem; /* text-lg */
-  font-weight: 600; /* font-semibold */
+  font-weight: 600; /* font-semibold */ 
   background-color: #007bff;
   color: white;
   border: none;
