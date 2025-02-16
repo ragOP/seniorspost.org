@@ -281,7 +281,10 @@ export default function ChatApp() {
     setShowOptions(false);
   }
 
-  const handleSubmit = () => { }
+  const handleSubmit = (option) => {
+    // console.log(option, ">>>>>>>> options")
+    setChat((prev) => [...prev, { id: `user-${Math.random()}`, content: option.label, role: "user" }]);
+   }
   return (
     <div className="chat-container">
       <div className="chat-box">
@@ -332,6 +335,7 @@ export default function ChatApp() {
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
                 {option.type === "input" ? (
+                  <>
                   <input
                     type="text"
                     placeholder="Type your response here..."
@@ -349,6 +353,8 @@ export default function ChatApp() {
                       }
                     }}
                   />
+                  <button key={index} className="chat-option" onClick={() => handleSubmit(option)}>Submit</button>
+                  </>
                 ) :
                   <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
                 }
