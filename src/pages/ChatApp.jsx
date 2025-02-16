@@ -29,7 +29,7 @@ const messages = [
 ];
 
 const fullGrid = { lg: 12, md: 12, sm: 12, xs: 12 };
-const halfGrid = { lg: 6, md: 6, sm: 6, xs: 12 };
+const halfGrid = { lg: 6, md: 6, sm: 6, xs: 6 };
 
 export const medicaidOptions = {
   creditCardDebt: [
@@ -191,7 +191,7 @@ export const medicareOptions = {
 export const medicareFlow = {
   1: {
     assistant_messages: [
-      "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
+      "I see you're on Medicare. While you may not qualify for the ACA benefits, we might have other options that could help you.",
       "Let me ask you a few more questions. Are you currently in credit card debt?"
     ],
     options: medicareOptions.creditCardDebt,
@@ -267,8 +267,6 @@ export const medicareFlow = {
   }
 };
 
-
-
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const appendMessagesWithDelay = async (updateChat, messages, delayMs) => {
@@ -281,7 +279,7 @@ const appendMessagesWithDelay = async (updateChat, messages, delayMs) => {
 
 export default function ChatApp() {
   const buttonsRef = useRef(null)
-  const chatsRef = useRef(null)
+  const chatContainerRef = useRef(null)
 
   const [chat, setChat] = useState([]);
   const [showButton, setShowButton] = useState(false);
@@ -431,8 +429,26 @@ export default function ChatApp() {
     handleOptionClick(formattedOption)
   }
 
+  // useEffect(() => {
+  //   if (chatContainerRef.current) {
+  //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  //   }
+  // }, [chat]);
+  
+  useEffect(() => {
+    setTimeout(() => {
+      if (buttonsRef.current) {
+        const scrollOptions = {
+          behavior: "smooth",
+          block: "center",
+        }
+        buttonsRef.current.scrollIntoView(scrollOptions)
+      }
+    }, 100)
+  }, [chat]);
+
   return (
-    <div className="chat-container">
+    <div className="chat-container" ref={chatContainerRef}>
       <div className="chat-box">
         {chat.map((message, index) => (
           <ChatMessage
@@ -447,37 +463,41 @@ export default function ChatApp() {
         {isTyping && <TypingIndicator />}
       </div>
 
-      <div ref={buttonsRef} className="button-container">
+      <div className="button-container">
         {showButton && <button className="button1" onClick={handleClick}>Yes, Show Me How to Save!</button>}
         {showOptions && (
-          <div className="chat-options">
-            <button className="chat-option" onClick={handleInsuranceClick}>No Insurance</button>
-            <button className="chat-option" onClick={handleMediCare}>Medicare</button>
-            <button className="chat-option" onClick={handleMedicaidClick}>Medicaid</button>
+          <div className="chat-options" ref={buttonsRef}>
+            <button className="chat-button" onClick={handleInsuranceClick}>No Insurance</button>
+            <button className="chat-button" onClick={handleMediCare}>Medicare</button>
+            <button className="chat-button" onClick={handleMedicaidClick}>Medicaid</button>
           </div>
         )}
         {showFinalOptions && (
-          <div className="chat-options">
+          <div className="chat-options" ref={buttonsRef}>
             <div className="chat-notification">
               <p className="chat-notification-message">
                 🎉 Great news! You're pre-qualified for amazing benefits!
               </p>
             </div>
-            <button className="chat-option">Raghib</button>
-            <button className="button1">Call 8889823536 Now!</button>
-            <div id="phone-number">
-              <a href="tel:+18889823536" class="call-button">
+            <button className="chat-button">Raghib</button>
+            <button className="button1">
+              <a href="tel:+18889823536" className="call-button">
                 Call (888) 982-3536 Now!
               </a>
-            </div>
-            <div class="info-text">
+            </button>
+            {/* <div id="phone-number">
+              <a href="tel:+18889823536" className="call-button">
+                Call (888) 982-3536 Now!
+              </a>
+            </div> */}
+            <div className="info-text">
               <div>TTY: 711</div>
-              <div class="availability">Friendly Agents Available: M-F 9am-6pm EST</div>
+              <div className="availability">Friendly Agents Available: M-F 9am-6pm EST</div>
             </div>
           </div>
         )}
         {medicaidOptions && (
-          <Grid2 container spacing={2}>
+          <Grid2 container spacing={2} ref={buttonsRef}>
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
                 {option.type === "input" ? (
@@ -507,16 +527,15 @@ export default function ChatApp() {
                         }
                       }}
                     />
-                    <button type="submit" className="chat-option">Submit</button>
+                    <button type="submit" className="chat-button">Submit</button>
                   </form>
                 ) :
-                  <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
+                  <button key={index} className="chat-button" onClick={() => handleOptionClick(option)}>{option.label}</button>
                 }
               </Grid2>
             ))}
           </Grid2>
         )}
-
       </div>
     </div >
   );
