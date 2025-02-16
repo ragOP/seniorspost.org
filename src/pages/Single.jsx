@@ -475,6 +475,7 @@ export const PageAnalytics = ({ websiteAnalyticsData }) => {
                 fill: 'white !important',
               },
             }}
+            
             height={200}
           />
         </div>
