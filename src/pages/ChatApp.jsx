@@ -29,7 +29,7 @@ const messages = [
 ];
 
 const fullGrid = { lg: 12, md: 12, sm: 12, xs: 12 };
-const halfGrid = { lg: 6, md: 6, sm: 6, xs: 12 };
+const halfGrid = { lg: 6, md: 6, sm: 6, xs: 6 };
 
 export const medicaidOptions = {
   creditCardDebt: [
@@ -81,7 +81,7 @@ export const medicaidFlow = {
   },
   5: {
     assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
-    options: medicaidOptions.personalLoan,
+    options: {...medicaidOptions.personalLoan},
   },
   6: {
     assistant_messages: ["Great! How much would you like to borrow?"],
@@ -309,7 +309,7 @@ export default function ChatApp() {
             </div>
           </div>
         )}
-        {medicaidOptions && (
+        {medicaidOptions && medicaidOptions?.length > 0 && (
           <Grid2 container spacing={2}>
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
