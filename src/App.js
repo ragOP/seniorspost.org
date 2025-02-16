@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ShowHistoryPage from "./components/ShowHistoryPage";
 import AdminPanel from "./pages/admin";
 import Raghib from "./pages/Raghib";
@@ -14,6 +14,28 @@ function App() {
   const onShowHistory = () => {
     setIsShowingPanel(true);
   };
+
+  const [hasPassed530ET, setHasPassed530ET] = useState(false);
+
+  useEffect(() => {
+    // Get current time in Eastern Time (ET)
+    const now = new Date();
+    const estTime = new Date(
+      now.toLocaleString("en-US", { timeZone: "America/New_York" })
+    );
+
+    const hours = estTime.getHours();
+    const minutes = estTime.getMinutes();
+
+    // Check if the time has passed 5:30 PM ET
+    if (hours > 17 || (hours === 17 && minutes >= 30)) {
+      console.log("✅ The time has passed 5:30 PM ET.");
+      setHasPassed530ET(true);
+    } else {
+      console.log("❌ The time has NOT passed 5:30 PM ET.");
+      setHasPassed530ET(false);
+    }
+  }, []);
 
   return (
     <div>

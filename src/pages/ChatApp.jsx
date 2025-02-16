@@ -3,7 +3,7 @@ import '../styles/chat-styles.css'
 import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
 import { Grid } from "lucide-react";
-import { Grid2 } from "@mui/material";
+import { Grid2, TextField } from "@mui/material";
 
 const messages = [
   {
@@ -50,13 +50,13 @@ export const medicaidOptions = {
     { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
   ],
   loanAmount: [
-    { id: "m_o_6_1", label: "$100-1700" },
-    { id: "m_o_6_2", label: "$1700-3300" },
+    { id: "m_o_6_1", label: "$100-1700", gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$1700-3300", gridValues: fullGrid },
   ],
-  nameInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
-  emailInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
-  phoneInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
-  zipInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
+  nameInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
+  emailInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
+  phoneInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
+  zipInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
 };
 
 export const medicaidFlow = {
@@ -263,6 +263,7 @@ export default function ChatApp() {
     setShowOptions(false);
   }
 
+  const handleSubmit = () => { }
   return (
     <div className="chat-container">
       <div className="chat-box">
@@ -298,12 +299,33 @@ export default function ChatApp() {
           <Grid2 container spacing={2}>
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
-                <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
+                {option.type === "input" ? (
+                  <input
+                    type="text"
+                    placeholder="Type your response here..."
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '0.5rem',
+                      outline: 'none',
+                      boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.5)',
+                    }}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleSubmit()
+                      }
+                    }}
+                  />
+                ) :
+                  <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
+                }
               </Grid2>
             ))}
           </Grid2>
         )}
+
       </div>
-    </div>
+    </div >
   );
 }
