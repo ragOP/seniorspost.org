@@ -76,7 +76,7 @@ export default function ChatApp() {
 
   const handleMedicaidClick = () => {
     setIsTyping(true);
-    setChat((prev) => [...prev, { id: "user-2", content: "Medicaid", role: "user" }]);
+    setChat((prev) => [...prev, { id: "user-2", content: "None", role: "user" }]);
 
     setTimeout(() => {
       setChat((prev) => [...prev, { id: "assistant-6", content: "🎉 Fantastic news! You're one step closer to major savings!", role: "assistant" }]);
@@ -131,15 +131,15 @@ export default function ChatApp() {
         {showButton && <button className="button1" onClick={handleClick}>Yes, Show Me How to Save!</button>}
         {showOptions && (
           <div className="chat-options">
-            <button className="chat-option" onClick={handleMedicaidClick}>Medicaid</button>
+            <button className="chat-option" onClick={handleMedicaidClick}>No Insurance</button>
             <button className="chat-option">Medicare</button>
-            <button className="chat-option">Neither</button>
+            <button className="chat-option">Medicaid</button>
           </div>
         )}
         {showFinalOptions && (
           <div className="chat-options">
             <button className="chat-option">Raghib</button>
-            <button className="chat-option">Taazeem</button>
+            <button className="button1">Call 8889823536 Now!</button>
           </div>
         )}
       </div>
