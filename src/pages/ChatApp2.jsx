@@ -182,8 +182,8 @@ export const medicareOptions = {
     { id: "m_o_7_5", label: "No credit", goToStep: 8, gridValues: fullGrid },
   ],
   nameInput: [{ id: "m_o_8_1", type: "input", goToStep: 9, label: "Type your response here", gridValues: fullGrid, fieldType: "name" }],
-  emailInput: [{ id: "m_o_8_1", type: "input", goToStep: 10, label: "Type your response here", gridValues: fullGrid, fieldType: "email" }],
-  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
+  emailInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "email" }],
+  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 10, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
   phoneInput: [{ id: "m_o_8_1", type: "input", goToStep: 15, label: "Type your response here", gridValues: fullGrid, fieldType: "phone" }],
 };
 
@@ -452,7 +452,7 @@ export default function ChatApp() {
       console.log("Phone - ", form.phone)
       console.log("Zip Code - ", value)
 
-      setChat((prev) => [...prev, { id: "user-11", content: "value", role: "user" }]);
+      setChat((prev) => [...prev, { id: "user-11", content: value, role: "user" }]);
       setIsTyping(true)
       setTimeout(() => {
         setChat((prev) => [...prev, { id: "assistant-4", content: "Thank you for providing your information. Now, are you currently on Medicaid or Medicare?", role: "assistant" }]);
@@ -461,7 +461,6 @@ export default function ChatApp() {
         setShowOptions(true)
         setMedicaidStep(1)
       }, 1000);
-
     }
   }
 
