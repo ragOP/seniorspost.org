@@ -80,8 +80,8 @@ export const medicaidFlow = {
     options: medicaidOptions.debtSpecificRange,
   },
   5: {
-    assistant_messages: ["Test"],
-    options: [{ id: "m_o_5_1", value: "1", label: "1" }],
+    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
+    options: medicaidOptions.personalLoan,
   },
   6: {
     assistant_messages: ["Great! How much would you like to borrow?"],
