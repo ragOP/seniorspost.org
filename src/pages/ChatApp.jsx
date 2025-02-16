@@ -29,7 +29,7 @@ const messages = [
 ];
 
 const fullGrid = { lg: 12, md: 12, sm: 12, xs: 12 };
-const halfGrid = { lg: 6, md: 6, sm: 6, xs: 6 };
+const halfGrid = { lg: 6, md: 6, sm: 6, xs: 12 };
 
 export const medicaidOptions = {
   creditCardDebt: [
@@ -50,8 +50,20 @@ export const medicaidOptions = {
     { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
   ],
   loanAmount: [
-    { id: "m_o_6_1", label: "$100-1700", gridValues: fullGrid },
-    { id: "m_o_6_2", label: "$1700-3300", gridValues: fullGrid },
+    { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$1700-3300", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$3300-4900", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$4900-6500", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$6500-8100", goToStep: 14, gridValues: fullGrid },
+    { id: "m_o_6_2", label: "$8100-10000", goToStep: 14, gridValues: fullGrid },
+  ],
+  creditScore: [
+    { id: "m_o_7_1", label: "Excellent (700+)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_2", label: "Good (650-700)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_3", label: "Fair (550-650)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_4", label: "Poor (550 or lower)", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_7_5", label: "No credit", goToStep: 8, gridValues: fullGrid },
+
   ],
   nameInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
   emailInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
@@ -81,7 +93,7 @@ export const medicaidFlow = {
   },
   5: {
     assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
-    options: {...medicaidOptions.personalLoan},
+    options: medicaidOptions.personalLoan,
   },
   6: {
     assistant_messages: ["Great! How much would you like to borrow?"],
@@ -124,6 +136,12 @@ export const medicaidFlow = {
     assistant_messages: [
       "I understand. Thank you for your time. If you need any assistance in the future, please don't hesitate to reach out!."
     ],
+  },
+  14: {
+    assistant_messages: [
+      "Thank you. What's your credit score range?"
+    ],
+    options: medicaidOptions.creditScore,
   }
 };
 
@@ -309,7 +327,7 @@ export default function ChatApp() {
             </div>
           </div>
         )}
-        {medicaidOptions && medicaidOptions?.length > 0 && (
+        {medicaidOptions && (
           <Grid2 container spacing={2}>
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
