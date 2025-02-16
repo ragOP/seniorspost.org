@@ -434,7 +434,7 @@ export default function ChatApp() {
   //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
   //   }
   // }, [chat]);
-  
+
   useEffect(() => {
     setTimeout(() => {
       if (buttonsRef.current) {
