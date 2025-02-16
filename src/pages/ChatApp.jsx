@@ -351,7 +351,7 @@ export default function ChatApp() {
     setShowOptions(false);
 
     setIsTyping(true);
-    setChat((prev) => [...prev, { id: `user-${medicareFlow}`, content: "Mediacare", role: "user" }]);
+    setChat((prev) => [...prev, { id: `user-${medicareFlow}`, content: "Medicare", role: "user" }]);
 
     const currentStep = medicaidFlow[mediacaidStep];
 
@@ -478,7 +478,6 @@ export default function ChatApp() {
                 🎉 Great news! You're pre-qualified for amazing benefits!
               </p>
             </div>
-            <button className="chat-button">Raghib</button>
             <button className="button1">
               <a href="tel:+18889823536" className="call-button">
                 Call (888) 982-3536 Now!
