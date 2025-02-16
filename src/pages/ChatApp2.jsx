@@ -418,9 +418,9 @@ export default function ChatApp() {
     }, 2000);
 
     setTimeout(() => {
-      const newMessages = [{ id: "assistant-8", content: "Don't miss out on this opportunity! Call now to lock in your benefits. It only takes a few minutes, and you could start saving today!", role: "assistant" }];
+      const newMessages = [{ id: "assistant-8", content: "Thank you for providing your information. We'll reach out to you the next business day!", role: "assistant" }];
       setChat((prev) => [...prev, ...newMessages || []]);
-      setShowFinalOptions(true);
+      // setShowFinalOptions(true);
     }, 3000);
 
     setShowOptions(false);
