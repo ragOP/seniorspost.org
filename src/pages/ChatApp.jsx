@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import '../styles/chat-styles.css'
 import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
+import { Grid } from "lucide-react";
+import { Grid2 } from "@mui/material";
 
 const messages = [
   {
@@ -26,6 +28,97 @@ const messages = [
   },
 ];
 
+const fullGrid = { lg: 12, md: 12, sm: 12, xs: 12 };
+const halfGrid = { lg: 6, md: 6, sm: 6, xs: 12 };
+
+export const medicaidFlow = {
+  1: {
+    assistant_messages: [
+      "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
+      "Let me ask you a few more questions. Are you currently in credit card debt?"
+    ],
+    options: [
+      { id: "m_o_1_1", value: "yes", label: "Yes", goToStep: 2, gridValues: halfGrid },
+      { id: "m_o_1_2", value: "no", label: "No", goToStep: 3, gridValues: halfGrid },
+    ]
+  },
+  2: {
+    assistant_messages: [
+      "I understand. Is your credit card debt over or under $15,000?"
+    ],
+    options: [
+      { id: "m_o_2_1", value: "over", label: "Over $15,000", goToStep: 4, gridValues: halfGrid },
+      { id: "m_o_2_2", value: "under", label: "Under $15,000", goToStep: 5, gridValues: halfGrid },
+    ]
+  },
+  3: {
+    assistant_messages: [
+      "Alright, thanks for letting me know. Are you looking for a personal loan??"
+    ],
+    options: [
+      { id: "m_o_3_1", value: "yes", label: "Yes", goToStep: 6, gridValues: halfGrid },
+      { id: "m_o_3_2", value: "no", label: "No", goToStep: 7, gridValues: halfGrid },
+    ]
+  },
+  4: {
+    assistant_messages: [
+      "I see. Could you please specify the range of your debt?"
+    ],
+    options: [
+      { id: "m_o_4_1", value: "over", label: "15-20k", goToStep: 8, gridValues: fullGrid },
+      { id: "m_o_4_2", value: "under", label: "20-25k", goToStep: 9, gridValues: fullGrid },
+      { id: "m_o_4_2", value: "under", label: "20-25k", goToStep: 10, gridValues: fullGrid },
+    ]
+  },
+  5: {
+    assistant_messages: [
+      "Test"
+    ],
+    options: [
+      { id: "m_o_4_1", value: "over", label: "1" },
+      { id: "m_o_4_2", value: "under", label: "1" },
+    ]
+  },
+  6: {
+    assistant_messages: [
+      "Great! How much would you like to borrow?"
+    ],
+    options: [
+      { id: "m_o_6_1", label: "$100-1700" },
+      { id: "m_o_6_2", label: "$1700-3300" },
+    ]
+  },
+  7: {
+    assistant_messages: [
+      "Great! How much would you like to borrow?"
+    ],
+    options: [
+      { id: "m_o_6_1", label: "$100-1700" },
+      { id: "m_o_6_2", label: "$1700-3300" },
+    ]
+  },
+  8: {
+    assistant_messages: [
+      "Thank you for providing that information. Now, let's collect some details so we can help you further.",
+      "What's your name?"
+    ],
+    options: [
+      { id: "m_o_6_1", type: "input", label: "Type your response here" },
+    ]
+  }
+};
+
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const appendMessagesWithDelay = async (updateChat, messages, delayMs) => {
+  for (const message of messages) {
+    const messageObj = { id: "assistant-6", content: message, role: "assistant" }
+    await delay(delayMs);
+    updateChat((prev) => [...prev || [], messageObj]);
+  }
+};
+
 export default function ChatApp() {
   const buttonsRef = useRef(null)
   const chatsRef = useRef(null)
@@ -36,6 +129,8 @@ export default function ChatApp() {
   const [showFinalOptions, setShowFinalOptions] = useState(false);
   const [visibleMessages, setVisibleMessages] = useState(-1);
   const [isTyping, setIsTyping] = useState(false);
+  const [mediacaidStep, setMedicaidStep] = useState(1);
+  const [medicaidOptions, setMedicaidOptions] = useState(null);
 
   useEffect(() => {
     let timeoutIds = [];
@@ -74,7 +169,59 @@ export default function ChatApp() {
     setShowButton(false);
   };
 
-  const handleMedicaidClick = () => {
+  const handleMedicaidClick = async () => {
+
+    setShowOptions(false);
+
+    setIsTyping(true);
+    setChat((prev) => [...prev, { id: `user-${mediacaidStep}`, content: "Medicaid", role: "user" }]);
+
+    const currentStep = medicaidFlow[mediacaidStep];
+
+    if (currentStep) {
+      await appendMessagesWithDelay(setChat, currentStep.assistant_messages, 1000);
+      setMedicaidStep((prev) => prev + 1);
+
+      const options = currentStep.options;
+      setMedicaidOptions(options)
+    }
+
+    setIsTyping(false);
+  };
+
+  const isFirstInGroup = (index) => {
+    if (index === 0) return true;
+    const currentMessage = chat[index];
+    const previousMessage = chat[index - 1];
+    return currentMessage.role !== previousMessage.role;
+  };
+
+  const isLastInGroup = (index) => {
+    if (index === chat.length - 1) return true;
+    const currentMessage = chat[index];
+    const nextMessage = chat[index + 1];
+    return currentMessage.role !== nextMessage.role;
+  };
+
+  const handleOptionClick = async (option) => {
+    setIsTyping(true);
+    setMedicaidOptions(null)
+    setChat((prev) => [...prev, { id: `user-${mediacaidStep}`, content: option.label, role: "user" }]);
+
+    const currentStep = medicaidFlow[option.goToStep];
+
+    if (currentStep) {
+      await appendMessagesWithDelay(setChat, currentStep.assistant_messages, 1000);
+      setMedicaidStep(option.goToStep);
+
+      const options = currentStep.options;
+      setMedicaidOptions(options);
+    }
+
+    setIsTyping(false);
+  };
+
+  const handleInsuranceClick = () => {
     setIsTyping(true);
     setChat((prev) => [...prev, { id: "user-2", content: "None", role: "user" }]);
 
@@ -94,22 +241,7 @@ export default function ChatApp() {
     }, 3000);
 
     setShowOptions(false);
-  };
-
-  const isFirstInGroup = (index) => {
-    if (index === 0) return true;
-    const currentMessage = chat[index];
-    const previousMessage = chat[index - 1];
-    return currentMessage.role !== previousMessage.role;
-  };
-
-  const isLastInGroup = (index) => {
-    if (index === chat.length - 1) return true;
-    const currentMessage = chat[index];
-    const nextMessage = chat[index + 1];
-    return currentMessage.role !== nextMessage.role;
-  };
-
+  }
 
   return (
     <div className="chat-container">
@@ -131,9 +263,9 @@ export default function ChatApp() {
         {showButton && <button className="button1" onClick={handleClick}>Yes, Show Me How to Save!</button>}
         {showOptions && (
           <div className="chat-options">
-            <button className="chat-option" onClick={handleMedicaidClick}>No Insurance</button>
+            <button className="chat-option" onClick={handleInsuranceClick}>No Insurance</button>
             <button className="chat-option">Medicare</button>
-            <button className="chat-option">Medicaid</button>
+            <button className="chat-option" onClick={handleMedicaidClick}>Medicaid</button>
           </div>
         )}
         {showFinalOptions && (
@@ -141,6 +273,15 @@ export default function ChatApp() {
             <button className="chat-option">Raghib</button>
             <button className="button1">Call 8889823536 Now!</button>
           </div>
+        )}
+        {medicaidOptions && (
+          <Grid2 container spacing={2}>
+            {medicaidOptions.map((option, index) => (
+              <Grid2 item size={{ ...option.gridValues }} key={index}>
+                <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
+              </Grid2>
+            ))}
+          </Grid2>
         )}
       </div>
     </div>
