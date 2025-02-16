@@ -89,8 +89,8 @@
 
 .button1 {
   width: 100%; /* w-full */
-  padding-top: 1.5rem; /* py-6 */
-  padding-bottom: 1.5rem; /* py-6 */
+  padding-top: 0.8rem; /* py-6 */
+  padding-bottom: 0.8rem; /* py-6 */
   font-size: 1.125rem; /* text-lg */
   font-weight: 600; /* font-semibold */
   background: linear-gradient(to right, #22c55e, #16a34a); /* bg-gradient-to-r from-green-600 to-green-700 */
