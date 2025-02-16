@@ -102,7 +102,7 @@ export const medicaidFlow = {
   },
   8: {
     assistant_messages: [
-      "Thank you for providing that information. Now, let's collect some details so we can help you further.",
+      "Thank you for providing that information. We'll reach out to you the next business day with more details about our debt relief program!",
     ],
   },
   9: {
@@ -218,7 +218,7 @@ export const medicareFlow = {
   },
   8: {
     assistant_messages: [
-      "Thank you for providing that information. Now, let's collect some details so we can help you further.",
+      "Thank you for providing that information. We'll reach out to you the next business day with more details about our debt relief program!",
     ],
   },
   9: {
