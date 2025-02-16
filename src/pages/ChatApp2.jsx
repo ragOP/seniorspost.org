@@ -181,8 +181,8 @@ export const medicareOptions = {
   ],
   nameInput: [{ id: "m_o_8_1", type: "input", goToStep: 9, label: "Type your response here", gridValues: fullGrid, fieldType: "name" }],
   emailInput: [{ id: "m_o_8_1", type: "input", goToStep: 10, label: "Type your response here", gridValues: fullGrid, fieldType: "email" }],
-  phoneInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "phone" }],
-  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 15, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
+  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
+  phoneInput: [{ id: "m_o_8_1", type: "input", goToStep: 15, label: "Type your response here", gridValues: fullGrid, fieldType: "phone" }],
 };
 
 export const medicareFlow = {
@@ -284,6 +284,9 @@ export default function ChatApp() {
   const [isTyping, setIsTyping] = useState(false);
   const [mediacaidStep, setMedicaidStep] = useState(1);
   const [medicaidOptions, setMedicaidOptions] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [formStep, setFormStep] = useState(0);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -311,21 +314,22 @@ export default function ChatApp() {
   }, []);
 
   const handleClick = () => {
+    setShowButton(false);
+
     setIsTyping(true);
     setChat((prev) => [...prev, { id: "user-1", content: "Yes", role: "user" }]);
 
     setTimeout(() => {
-      setChat((prev) => [...prev, { id: "assistant-4", content: "Awesome! Let's get you those savings ASAP. I just need to ask you a couple quick questions.", role: "assistant" }]);
+      setChat((prev) => [...prev, { id: "assistant-4", content: "Great! To see what benefits you qualify for in your area, I'll need to ask you a few quick questions. This will help us provide you with the most accurate information.", role: "assistant" }]);
       setIsTyping(false);
     }, 1000);
 
     setTimeout(() => {
-      setChat((prev) => [...prev, { id: "assistant-5", content: "First up: Are you currently on Medicaid or Medicare?", role: "assistant" }]);
+      setChat((prev) => [...prev, { id: "assistant-5", content: "What's your name?", role: "assistant" }]);
       setVisibleMessages(messages.length - 1);
-      setShowOptions(true);
+      setMedicaidOptions(medicareOptions?.nameInput)
     }, 2000);
 
-    setShowButton(false);
   };
 
   const handleMedicaidClick = async () => {
@@ -427,12 +431,13 @@ export default function ChatApp() {
     const value = input.value.trim()
 
     if (value === "") {
-      alert("Please enter value")
       return
     }
 
     const formattedOption = { ...option, label: value }
-    handleOptionClick(formattedOption)
+    if (option.fieldType !== "zip_code") {
+      handleOptionClick(formattedOption)
+    }
 
     setForm((prev) => ({ ...prev, [option.fieldType]: value }))
 
@@ -442,6 +447,17 @@ export default function ChatApp() {
       console.log("Email - ", form.email)
       console.log("Phone - ", form.phone)
       console.log("Zip Code - ", value)
+
+      setChat((prev) => [...prev, { id: "user-11", content: "value", role: "user" }]);
+      setIsTyping(true)
+      setTimeout(() => {
+        setChat((prev) => [...prev, { id: "assistant-4", content: "Thank you for providing your information. Now, are you currently on Medicaid or Medicare?", role: "assistant" }]);
+        setIsTyping(false);
+        setMedicaidOptions(null)
+        setShowOptions(true)
+        setMedicaidStep(1)
+      }, 1000);
+
     }
   }
 
