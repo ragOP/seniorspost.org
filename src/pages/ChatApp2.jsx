@@ -73,7 +73,7 @@ export const medicaidFlow = {
   1: {
     assistant_messages: [
       "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
-      "Let me ask you a few more questions. Are you currently in credit card debt?"
+      "Are you currently in credit card debt?"
     ],
     options: medicaidOptions.creditCardDebt,
   },
@@ -82,7 +82,7 @@ export const medicaidFlow = {
     options: medicaidOptions.debtRange,
   },
   3: {
-    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan?"],
+    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan? You can get qualified independent of your credit score!"],
     options: medicaidOptions.personalLoan,
   },
   4: {
@@ -90,7 +90,7 @@ export const medicaidFlow = {
     options: medicaidOptions.debtSpecificRange,
   },
   5: {
-    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
+    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan? You can get qualified independent of your credit score!"],
     options: medicaidOptions.personalLoan,
   },
   6: {
@@ -103,13 +103,11 @@ export const medicaidFlow = {
   8: {
     assistant_messages: [
       "Thank you for providing that information. Now, let's collect some details so we can help you further.",
-      "What's your name?"
     ],
-    options: medicaidOptions.nameInput,
   },
   9: {
     assistant_messages: [
-      "What's your email address?"
+      "What's your email?"
     ],
     options: medicaidOptions.emailInput,
   },
@@ -190,8 +188,8 @@ export const medicareOptions = {
 export const medicareFlow = {
   1: {
     assistant_messages: [
-      "I see you're on Medicare. While you may not qualify for the ACA benefits, we might have other options that could help you.",
-      "Let me ask you a few more questions. Are you currently in credit card debt?"
+      "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
+      "Are you currently in credit card debt?"
     ],
     options: medicareOptions.creditCardDebt,
   },
@@ -200,7 +198,7 @@ export const medicareFlow = {
     options: medicareOptions.debtRange,
   },
   3: {
-    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan?"],
+    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan? You can get qualified independent of your credit score!"],
     options: medicareOptions.personalLoan,
   },
   4: {
@@ -208,7 +206,7 @@ export const medicareFlow = {
     options: medicareOptions.debtSpecificRange,
   },
   5: {
-    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan?"],
+    assistant_messages: ["Thank you for sharing that. Are you looking for a personal loan? You can get qualified independent of your credit score!"],
     options: medicareOptions.personalLoan,
   },
   6: {
@@ -221,9 +219,7 @@ export const medicareFlow = {
   8: {
     assistant_messages: [
       "Thank you for providing that information. Now, let's collect some details so we can help you further.",
-      "What's your name?"
     ],
-    options: medicareOptions.nameInput,
   },
   9: {
     assistant_messages: [
