@@ -47,7 +47,7 @@ function App() {
       <ToastContainer />
 
       <Header />
-      {/* <ChatApp /> */}
+      {hasPassed530ET ? <ChatApp /> : <ChatApp2 />}
       <ChatApp2 />
       <Footer />
     </div>
