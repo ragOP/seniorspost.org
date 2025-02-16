@@ -48,7 +48,6 @@ function App() {
 
       <Header />
       {hasPassed530ET ? <ChatApp /> : <ChatApp2 />}
-      <ChatApp2 />
       <Footer />
     </div>
   );
