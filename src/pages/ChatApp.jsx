@@ -88,8 +88,7 @@ export const medicaidFlow = {
     options: medicaidOptions.loanAmount,
   },
   7: {
-    assistant_messages: ["Great! How much would you like to borrow?"],
-    options: medicaidOptions.loanAmount,
+    assistant_messages: ["I understand. Thank you for your time. If you need any assistance in the future, please don't hesitate to reach out!."],
   },
   8: {
     assistant_messages: [
@@ -119,6 +118,11 @@ export const medicaidFlow = {
   12: {
     assistant_messages: [
       "Thank you for providing that information. We'll be in touch shortly."
+    ],
+  },
+  13: {
+    assistant_messages: [
+      "I understand. Thank you for your time. If you need any assistance in the future, please don't hesitate to reach out!."
     ],
   }
 };
