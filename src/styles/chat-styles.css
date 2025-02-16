@@ -89,19 +89,27 @@
 
 .button1 {
   width: 100%; /* w-full */
-  padding-top: .8rem; /* py-6 */
-  padding-bottom: .8rem; /* py-6 */
+  padding-top: 0.8rem; /* py-6 */
+  padding-bottom: 0.8rem; /* py-6 */
   font-size: 1.125rem; /* text-lg */
   font-weight: 600; /* font-semibold */
-  background: linear-gradient(to right, #22c55e, #16a34a); /* bg-gradient-to-r from-green-600 to-green-700 */
+  background: linear-gradient(
+    to right,
+    #22c55e,
+    #16a34a
+  ); /* bg-gradient-to-r from-green-600 to-green-700 */
   color: white; /* text-white */
   border-radius: 0.75rem; /* rounded-xl */
   transition: background-color 0.3s ease, transform 0.15s ease; /* hover transition & scaling */
-  border: none
+  border: none;
 }
 
 .button1:hover {
-  background: linear-gradient(to right, #1cc159, #13a047); /* hover:from-green-700 hover:to-green-800 */
+  background: linear-gradient(
+    to right,
+    #1cc159,
+    #13a047
+  ); /* hover:from-green-700 hover:to-green-800 */
 }
 
 .button1:active {
@@ -111,8 +119,8 @@
 .chat-button,
 .chat-option {
   width: 100%; /* w-full */
-  padding-top: .8rem; /* py-6 */
-  padding-bottom: .8rem; /* py-6 */
+  padding-top: 0.8rem; /* py-6 */
+  padding-bottom: 0.8rem; /* py-6 */
   font-size: 1.125rem; /* text-lg */
   font-weight: 600; /* font-semibold */
   background-color: #007bff;
@@ -124,7 +132,11 @@
 
 .chat-button:hover,
 .chat-option:hover {
-  background: linear-gradient(to right, #368ae3, #2680e0); /* hover:from-green-700 hover:to-green-800 */
+  background: linear-gradient(
+    to right,
+    #368ae3,
+    #2680e0
+  ); /* hover:from-green-700 hover:to-green-800 */
 }
 
 .chat-option:active {
@@ -157,4 +169,58 @@
     font-size: 12px;
     padding: 10px;
   }
+}
+
+.chat-notification {
+  background-color: #f0fdf4; /* Equivalent to bg-green-50 */
+  border: 1px solid #bbf7d0; /* Equivalent to border-green-200 */
+  border-radius: 8px; /* Equivalent to rounded-lg */
+  padding: 0px 16px; /* Equivalent to p-4 */
+  width: 94%;
+}
+
+.chat-notification-message {
+  color: #166534; /* Equivalent to text-green-800 */
+  font-size: 14px; /* Equivalent to text-sm */
+  text-align: center; /* Equivalent to text-center */
+  font-weight: 600; /* Equivalent to font-semibold */
+}
+
+.call-button {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(
+    to right,
+    #22c55e,
+    #16a34a
+  ); /* Equivalent to bg-gradient-to-r */
+  color: white;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease-in-out;
+}
+
+.call-button:hover {
+  background: linear-gradient(
+    to right,
+    #16a34a,
+    #15803d
+  ); /* Darker green on hover */
+}
+
+.info-text {
+  font-size: 14px;
+  color: #4b5563; /* text-gray-600 */
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.availability {
+  font-weight: 500;
 }

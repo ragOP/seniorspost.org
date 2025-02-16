@@ -291,8 +291,22 @@ export default function ChatApp() {
         )}
         {showFinalOptions && (
           <div className="chat-options">
+            <div className="chat-notification">
+              <p className="chat-notification-message">
+                🎉 Great news! You're pre-qualified for amazing benefits!
+              </p>
+            </div>
             <button className="chat-option">Raghib</button>
             <button className="button1">Call 8889823536 Now!</button>
+            <div id="phone-number">
+              <a href="tel:+18889823536" class="call-button">
+                Call (888) 982-3536 Now!
+              </a>
+            </div>
+            <div class="info-text">
+              <div>TTY: 711</div>
+              <div class="availability">Friendly Agents Available: M-F 9am-6pm EST</div>
+            </div>
           </div>
         )}
         {medicaidOptions && (
