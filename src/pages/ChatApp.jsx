@@ -46,8 +46,8 @@ export const medicaidOptions = {
   ],
   debtSpecificRange: [
     { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
-    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 9, gridValues: fullGrid },
-    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
+    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 8, gridValues: fullGrid },
   ],
   loanAmount: [
     { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
@@ -164,8 +164,8 @@ export const medicareOptions = {
   ],
   debtSpecificRange: [
     { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
-    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 9, gridValues: fullGrid },
-    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
+    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 8, gridValues: fullGrid },
   ],
   loanAmount: [
     { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
