@@ -188,7 +188,7 @@ export const medicareOptions = {
 export const medicareFlow = {
   1: {
     assistant_messages: [
-      "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
+      "I see you're on Medicare. While you may not qualify for the ACA benefits, we might have other options that could help you.",
       "Are you currently in credit card debt?"
     ],
     options: medicareOptions.creditCardDebt,
