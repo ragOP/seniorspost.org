@@ -93,7 +93,7 @@
   padding-bottom: 1.5rem; /* py-6 */
   font-size: 1.125rem; /* text-lg */
   font-weight: 600; /* font-semibold */
-  background: linear-gradient(to right, #a2f9ce, #4dba87); /* bg-gradient-to-r from-green-600 to-green-700 */
+  background: linear-gradient(to right, #22c55e, #16a34a); /* bg-gradient-to-r from-green-600 to-green-700 */
   color: white; /* text-white */
   border-radius: 0.75rem; /* rounded-xl */
   transition: background-color 0.3s ease, transform 0.15s ease; /* hover transition & scaling */
@@ -101,7 +101,7 @@
 }
 
 .button1:hover {
-  background: linear-gradient(to right, #276749, #22543d); /* hover:from-green-700 hover:to-green-800 */
+  background: linear-gradient(to right, #1cc159, #13a047); /* hover:from-green-700 hover:to-green-800 */
 }
 
 .button1:active {
