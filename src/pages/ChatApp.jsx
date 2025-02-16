@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import '../styles/chat-styles.css'
 import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
-import { Grid } from "lucide-react";
-import { Grid2, TextField } from "@mui/material";
+import { Grid2 } from "@mui/material";
 
 const messages = [
   {
