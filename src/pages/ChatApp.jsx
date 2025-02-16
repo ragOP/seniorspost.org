@@ -46,7 +46,7 @@ export const medicaidOptions = {
   debtSpecificRange: [
     { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
     { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 8, gridValues: fullGrid },
-    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "30k+", label: "30k+", goToStep: 8, gridValues: fullGrid },
   ],
   loanAmount: [
     { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
@@ -109,7 +109,7 @@ export const medicaidFlow = {
   },
   9: {
     assistant_messages: [
-      "What's your email?"
+      "What's your email address?"
     ],
     options: medicaidOptions.emailInput,
   },
@@ -164,7 +164,7 @@ export const medicareOptions = {
   debtSpecificRange: [
     { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
     { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 8, gridValues: fullGrid },
-    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "30k+", label: "30k+", goToStep: 8, gridValues: fullGrid },
   ],
   loanAmount: [
     { id: "m_o_6_1", label: "$100-1700", goToStep: 14, gridValues: fullGrid },
@@ -288,6 +288,12 @@ export default function ChatApp() {
   const [isTyping, setIsTyping] = useState(false);
   const [mediacaidStep, setMedicaidStep] = useState(1);
   const [medicaidOptions, setMedicaidOptions] = useState(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    zip_code: "",
+  })
 
   useEffect(() => {
     let timeoutIds = [];
@@ -353,7 +359,7 @@ export default function ChatApp() {
     setIsTyping(true);
     setChat((prev) => [...prev, { id: `user-${medicareFlow}`, content: "Medicare", role: "user" }]);
 
-    const currentStep = medicaidFlow[mediacaidStep];
+    const currentStep = medicareFlow[mediacaidStep];
 
     if (currentStep) {
       await appendMessagesWithDelay(setChat, currentStep.assistant_messages, 1000);
@@ -424,15 +430,24 @@ export default function ChatApp() {
     const input = document.querySelector('input[type="text"]')
     const value = input.value.trim()
 
+    if (value === "") {
+      alert("Please enter value")
+      return
+    }
+
     const formattedOption = { ...option, label: value }
     handleOptionClick(formattedOption)
-  }
 
-  // useEffect(() => {
-  //   if (chatContainerRef.current) {
-  //     chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  //   }
-  // }, [chat]);
+    setForm((prev) => ({ ...prev, [option.fieldType]: value }))
+
+    if (option.fieldType === "zip_code") {
+      console.log("DATA SUBMITTED")
+      console.log("Name - ", form.name)
+      console.log("Email - ", form.email)
+      console.log("Phone - ", form.phone)
+      console.log("Zip Code - ", value)
+    }
+  }
 
   useEffect(() => {
     setTimeout(() => {
