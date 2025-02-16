@@ -5,6 +5,7 @@ import Raghib from "./pages/Raghib";
 import Single from "./pages/Single";
 import { ToastContainer } from "@cred/neopop-web/lib/components";
 import ChatApp from "./pages/ChatApp";
+import ChatApp2 from "./pages/ChatApp2";
 import { Footer } from "./pages/Footer";
 import { Header } from "./pages/Header";
 
@@ -46,7 +47,8 @@ function App() {
       <ToastContainer />
 
       <Header />
-      <ChatApp />
+      {/* <ChatApp /> */}
+      <ChatApp2 />
       <Footer />
     </div>
   );
