@@ -31,82 +31,98 @@ const messages = [
 const fullGrid = { lg: 12, md: 12, sm: 12, xs: 12 };
 const halfGrid = { lg: 6, md: 6, sm: 6, xs: 12 };
 
+export const medicaidOptions = {
+  creditCardDebt: [
+    { id: "m_o_1_1", value: "yes", label: "Yes", goToStep: 2, gridValues: halfGrid },
+    { id: "m_o_1_2", value: "no", label: "No", goToStep: 3, gridValues: halfGrid },
+  ],
+  debtRange: [
+    { id: "m_o_2_1", value: "over", label: "Over $15,000", goToStep: 4, gridValues: halfGrid },
+    { id: "m_o_2_2", value: "under", label: "Under $15,000", goToStep: 5, gridValues: halfGrid },
+  ],
+  personalLoan: [
+    { id: "m_o_3_1", value: "yes", label: "Yes", goToStep: 6, gridValues: halfGrid },
+    { id: "m_o_3_2", value: "no", label: "No", goToStep: 7, gridValues: halfGrid },
+  ],
+  debtSpecificRange: [
+    { id: "m_o_4_1", value: "15-20k", label: "15-20k", goToStep: 8, gridValues: fullGrid },
+    { id: "m_o_4_2", value: "20-25k", label: "20-25k", goToStep: 9, gridValues: fullGrid },
+    { id: "m_o_4_3", value: "25k+", label: "25k+", goToStep: 10, gridValues: fullGrid },
+  ],
+  loanAmount: [
+    { id: "m_o_6_1", label: "$100-1700" },
+    { id: "m_o_6_2", label: "$1700-3300" },
+  ],
+  nameInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
+  emailInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
+  phoneInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
+  zipInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here" }],
+};
+
 export const medicaidFlow = {
   1: {
     assistant_messages: [
       "I see you're on Medicaid. While you may not qualify for the ACA benefits, we might have other options that could help you.",
       "Let me ask you a few more questions. Are you currently in credit card debt?"
     ],
-    options: [
-      { id: "m_o_1_1", value: "yes", label: "Yes", goToStep: 2, gridValues: halfGrid },
-      { id: "m_o_1_2", value: "no", label: "No", goToStep: 3, gridValues: halfGrid },
-    ]
+    options: medicaidOptions.creditCardDebt,
   },
   2: {
-    assistant_messages: [
-      "I understand. Is your credit card debt over or under $15,000?"
-    ],
-    options: [
-      { id: "m_o_2_1", value: "over", label: "Over $15,000", goToStep: 4, gridValues: halfGrid },
-      { id: "m_o_2_2", value: "under", label: "Under $15,000", goToStep: 5, gridValues: halfGrid },
-    ]
+    assistant_messages: ["I understand. Is your credit card debt over or under $15,000?"],
+    options: medicaidOptions.debtRange,
   },
   3: {
-    assistant_messages: [
-      "Alright, thanks for letting me know. Are you looking for a personal loan??"
-    ],
-    options: [
-      { id: "m_o_3_1", value: "yes", label: "Yes", goToStep: 6, gridValues: halfGrid },
-      { id: "m_o_3_2", value: "no", label: "No", goToStep: 7, gridValues: halfGrid },
-    ]
+    assistant_messages: ["Alright, thanks for letting me know. Are you looking for a personal loan?"],
+    options: medicaidOptions.personalLoan,
   },
   4: {
-    assistant_messages: [
-      "I see. Could you please specify the range of your debt?"
-    ],
-    options: [
-      { id: "m_o_4_1", value: "over", label: "15-20k", goToStep: 8, gridValues: fullGrid },
-      { id: "m_o_4_2", value: "under", label: "20-25k", goToStep: 9, gridValues: fullGrid },
-      { id: "m_o_4_2", value: "under", label: "20-25k", goToStep: 10, gridValues: fullGrid },
-    ]
+    assistant_messages: ["I see. Could you please specify the range of your debt?"],
+    options: medicaidOptions.debtSpecificRange,
   },
   5: {
-    assistant_messages: [
-      "Test"
-    ],
-    options: [
-      { id: "m_o_4_1", value: "over", label: "1" },
-      { id: "m_o_4_2", value: "under", label: "1" },
-    ]
+    assistant_messages: ["Test"],
+    options: [{ id: "m_o_5_1", value: "1", label: "1" }],
   },
   6: {
-    assistant_messages: [
-      "Great! How much would you like to borrow?"
-    ],
-    options: [
-      { id: "m_o_6_1", label: "$100-1700" },
-      { id: "m_o_6_2", label: "$1700-3300" },
-    ]
+    assistant_messages: ["Great! How much would you like to borrow?"],
+    options: medicaidOptions.loanAmount,
   },
   7: {
-    assistant_messages: [
-      "Great! How much would you like to borrow?"
-    ],
-    options: [
-      { id: "m_o_6_1", label: "$100-1700" },
-      { id: "m_o_6_2", label: "$1700-3300" },
-    ]
+    assistant_messages: ["Great! How much would you like to borrow?"],
+    options: medicaidOptions.loanAmount,
   },
   8: {
     assistant_messages: [
       "Thank you for providing that information. Now, let's collect some details so we can help you further.",
       "What's your name?"
     ],
-    options: [
-      { id: "m_o_6_1", type: "input", label: "Type your response here" },
-    ]
+    options: medicaidOptions.nameInput,
+  },
+  9: {
+    assistant_messages: [
+      "What's your email?"
+    ],
+    options: medicaidOptions.emailInput,
+  },
+  10: {
+    assistant_messages: [
+      "What's your phone number?"
+    ],
+    options: medicaidOptions.phoneInput,
+  },
+  11: {
+    assistant_messages: [
+      "What's your zip code?"
+    ],
+    options: medicaidOptions.zipInput,
+  },
+  12: {
+    assistant_messages: [
+      "Thank you for providing that information. We'll be in touch shortly."
+    ],
   }
 };
+
 
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
