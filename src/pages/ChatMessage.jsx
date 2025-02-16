@@ -5,7 +5,6 @@ import '../styles/chat-message.css'
 export function ChatMessage({ message, isFirstInGroup, isLastInGroup, index, visibleMessages }) {
   const isAssistant = message.role === "assistant";
   const isVisible = index <= visibleMessages;
-console.log(">>", isAssistant, isLastInGroup)
   return (
     <AnimatePresence>
       {isVisible && (

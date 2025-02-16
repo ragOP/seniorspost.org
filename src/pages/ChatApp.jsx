@@ -63,12 +63,11 @@ export const medicaidOptions = {
     { id: "m_o_7_3", label: "Fair (550-650)", goToStep: 8, gridValues: fullGrid },
     { id: "m_o_7_4", label: "Poor (550 or lower)", goToStep: 8, gridValues: fullGrid },
     { id: "m_o_7_5", label: "No credit", goToStep: 8, gridValues: fullGrid },
-
   ],
-  nameInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
-  emailInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
-  phoneInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
-  zipInput: [{ id: "m_o_8_1", type: "input", label: "Type your response here", gridValues: fullGrid }],
+  nameInput: [{ id: "m_o_8_1", type: "input", goToStep: 9, label: "Type your response here", gridValues: fullGrid, fieldType: "name" }],
+  emailInput: [{ id: "m_o_8_1", type: "input", goToStep: 10, label: "Type your response here", gridValues: fullGrid, fieldType: "email" }],
+  phoneInput: [{ id: "m_o_8_1", type: "input", goToStep: 11, label: "Type your response here", gridValues: fullGrid, fieldType: "phone" }],
+  zipInput: [{ id: "m_o_8_1", type: "input", goToStep: 15, label: "Type your response here", gridValues: fullGrid, fieldType: "zip_code" }],
 };
 
 export const medicaidFlow = {
@@ -142,6 +141,11 @@ export const medicaidFlow = {
       "Thank you. What's your credit score range?"
     ],
     options: medicaidOptions.creditScore,
+  },
+  15: {
+    assistant_messages: [
+      "Thank you for providing your information. An agent will be in touch with you shortly!"
+    ],
   }
 };
 
@@ -282,9 +286,13 @@ export default function ChatApp() {
   }
 
   const handleSubmit = (option) => {
-    // console.log(option, ">>>>>>>> options")
-    setChat((prev) => [...prev, { id: `user-${Math.random()}`, content: option.label, role: "user" }]);
-   }
+    const input = document.querySelector('input[type="text"]')
+    const value = input.value.trim()
+
+    const formattedOption = { ...option, label: value }
+    handleOptionClick(formattedOption)
+  }
+
   return (
     <div className="chat-container">
       <div className="chat-box">
@@ -335,26 +343,34 @@ export default function ChatApp() {
             {medicaidOptions.map((option, index) => (
               <Grid2 item size={{ ...option.gridValues }} key={index}>
                 {option.type === "input" ? (
-                  <>
-                  <input
-                    type="text"
-                    placeholder="Type your response here..."
-                    style={{
-                      width: '100%',
-                      padding: '0.75rem',
-                      border: '1px solid #d1d5db',
-                      borderRadius: '0.5rem',
-                      outline: 'none',
-                      boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.5)',
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSubmit(option);
                     }}
-                    onKeyPress={(e) => {
-                      if (e.key === "Enter") {
-                        handleSubmit()
-                      }
-                    }}
-                  />
-                  <button key={index} className="chat-option" onClick={() => handleSubmit(option)}>Submit</button>
-                  </>
+                    style={{ width: '100%', }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Type your response here..."
+                      style={{
+                        width: '93%',
+                        padding: '0.75rem',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        outline: 'none',
+                        marginBottom: "0.9rem",
+                        boxShadow: '0 0 0 2px rgba(59, 130, 246, 0.5)',
+                      }}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          handleSubmit(
+                            option)
+                        }
+                      }}
+                    />
+                    <button type="submit" className="chat-option">Submit</button>
+                  </form>
                 ) :
                   <button key={index} className="chat-option" onClick={() => handleOptionClick(option)}>{option.label}</button>
                 }
