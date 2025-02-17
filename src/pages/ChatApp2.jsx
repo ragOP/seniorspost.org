@@ -372,7 +372,29 @@ export default function ChatApp() {
 
     setIsTyping(false);
   };
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    // Fetch the number from your backend endpoint
+    fetch('https://phonepe-be.onrender.com/get-number')
+      .then(response => response.json())
+      .then(data => {
+        // Extract phone number and formatted number from the API response
+        const phoneData = data.number;
+        const number = phoneData.number; // The raw phone number
+        const formattedNumber = phoneData.formatted_number; // The human-readable formatted number
+
+        // Update the state with the fetched data
+        setPhoneNumber({ number, formattedNumber });
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Failed to load number');
+        setLoading(false);
+      });
+  }, []);
   const isFirstInGroup = (index) => {
     if (index === 0) return true;
     const currentMessage = chat[index];
@@ -481,6 +503,7 @@ export default function ChatApp() {
     }, 100);
   }, [chat]);
 
+
   return (
     <div className="chat-container">
       <div className="chat-box">
@@ -514,9 +537,17 @@ export default function ChatApp() {
               </p>
             </div>
             <button className="button1">
-              <a href="tel:+18889823536" className="call-button">
-                Call (888) 982-3536 Now!
+            {loading ? (
+            <a href={`tel:${phoneNumber.number}`} className="call-button">
+            Call  Now!
+          </a>
+            ) : error ? (
+              <p>{error}</p>
+            ) : (
+              <a href={`tel:${phoneNumber.number}`} className="call-button">
+                Call {phoneNumber.formattedNumber} Now!
               </a>
+            )}  
             </button>
             {/* <div id="phone-number">
               <a href="tel:+18889823536" className="call-button">

@@ -277,6 +277,7 @@ const appendMessagesWithDelay = async (updateChat, messages, delayMs) => {
 };
 
 export default function ChatApp() {
+
   const buttonsRef = useRef(null)
   const chatContainerRef = useRef(null)
   const chatsRef = useRef(null)
@@ -296,6 +297,29 @@ export default function ChatApp() {
     zip_code: "",
   })
 
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch the number from your backend endpoint
+    fetch('https://phonepe-be.onrender.com/get-number')
+      .then(response => response.json())
+      .then(data => {
+        // Extract phone number and formatted number from the API response
+        const phoneData = data.number;
+        const number = phoneData.number; // The raw phone number
+        const formattedNumber = phoneData.formatted_number; // The human-readable formatted number
+
+        // Update the state with the fetched data
+        setPhoneNumber({ number, formattedNumber });
+        setLoading(false);
+      })
+      .catch(err => {
+        setError('Failed to load number');
+        setLoading(false);
+      });
+  }, []);
   useEffect(() => {
     let timeoutIds = [];
     setIsTyping(true);
@@ -502,9 +526,19 @@ export default function ChatApp() {
               </p>
             </div>
             <button className="button1">
-              <a href="tel:+18889823536" className="call-button">
-                Call (888) 982-3536 Now!
+
+            {loading ? (
+            <a href={`tel:${phoneNumber.number}`} className="call-button">
+            Call  Now!
+          </a>
+            ) : error ? (
+              <p>{error}</p>
+            ) : (
+              <a href={`tel:${phoneNumber.number}`} className="call-button">
+                Call {phoneNumber.formattedNumber} Now!
               </a>
+            )}  
+
             </button>
             {/* <div id="phone-number">
               <a href="tel:+18889823536" className="call-button">
