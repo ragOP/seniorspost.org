@@ -279,6 +279,7 @@ const appendMessagesWithDelay = async (updateChat, messages, delayMs) => {
 export default function ChatApp() {
   const buttonsRef = useRef(null)
   const chatContainerRef = useRef(null)
+  const chatsRef = useRef(null)
 
   const [chat, setChat] = useState([]);
   const [showButton, setShowButton] = useState(false);
@@ -448,16 +449,24 @@ export default function ChatApp() {
     }
   }
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (buttonsRef.current) {
+  //       const scrollOptions = {
+  //         behavior: "smooth",
+  //         block: "center",
+  //       }
+  //       buttonsRef.current.scrollIntoView(scrollOptions)
+  //     }
+  //   }, 100)
+  // }, [chat]);
+
   useEffect(() => {
     setTimeout(() => {
-      if (buttonsRef.current) {
-        const scrollOptions = {
-          behavior: "smooth",
-          block: "center",
-        }
-        buttonsRef.current.scrollIntoView(scrollOptions)
+      if (chatsRef.current) {
+        chatsRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
       }
-    }, 100)
+    }, 100);
   }, [chat]);
 
   return (
@@ -549,6 +558,8 @@ export default function ChatApp() {
           </Grid2>
         )}
       </div>
+      <div ref={chatsRef} style={{ marginBottom: "3rem" }} />
+
     </div >
   );
 }

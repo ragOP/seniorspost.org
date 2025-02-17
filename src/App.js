@@ -78,7 +78,7 @@ function App() {
         <a href={`tel:${phoneNumber.number}`}>{phoneNumber.formattedNumber}</a>
       ) : null} */}
       <Header />
-      {hasPassed530ET ? <ChatApp /> : <ChatApp2 />}
+      {!hasPassed530ET ? <ChatApp /> : <ChatApp2 />}
       <Footer />
     </div>
   );

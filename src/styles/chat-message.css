@@ -7,7 +7,12 @@
   font-family: Arial, sans-serif;
   background-color: white;
   border-radius: none;
-  background: linear-gradient(to bottom, white, #eff6ff); /* Add gradient here */
+  background: linear-gradient(to bottom, white, #eff6ff); 
+  height: 100%;
+  min-height: 70vh;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden
 }
 
 .bg-gradient-to-b {
@@ -24,9 +29,8 @@
 /* Chat box */
 .chat-box {
   border-radius: 10px;
-  height: 350px;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
   display: flex;
   flex-direction: column;
   
