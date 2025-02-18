@@ -579,7 +579,7 @@ export default function ChatApp() {
               ) : error ? (
                 <p>{error}</p>
               ) : (
-                <a href=tel:"+13214858035" className="call-button">
+                <a href="tel:+13214858035" className="call-button">
                   Call  Now!
                 </a>
               )}
