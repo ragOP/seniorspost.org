@@ -488,13 +488,14 @@ export default function ChatApp() {
   useEffect(() => {
     setTimeout(() => {
       if (chatsRef.current) {
-        chatsRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+    
+        chatsRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
       }
     }, 100);
   }, [chat]);
 
   return (
-    <div className="chat-container" ref={chatContainerRef}>
+    <div className="chat-box-container" ref={chatContainerRef}>
       <div className="chat-box">
         {chat.map((message, index) => (
           <ChatMessage
