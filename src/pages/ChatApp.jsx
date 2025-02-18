@@ -14,14 +14,14 @@ const messages = [
   {
     id: "initial-2",
     content:
-      "I'm Emily, your virtual assistant, and I've got great news about a special health plan that could save you serious cash! 💰",
+      "Emily this side, and I've got great news about a special Final Expense Benefit that could save you serious cash! 💰",
     role: "assistant",
     delay: 800,
   },
   {
     id: "initial-3",
     content:
-      "Want to see if you qualify for a $0 health plan AND a $500 rewards card for groceries and gas? It only takes 2 minutes! Tap 'Yes' to get started! 🚀",
+      "Want to see if you qualify for the $40,000 Final Expense Benefit? It only takes 2 minutes! Tap 'Yes' to get started! 👇  ",
     role: "assistant",
     delay: 1000,
   },
@@ -296,7 +296,7 @@ export default function ChatApp() {
     phone: "",
     zip_code: "",
   })
-
+  const [showOptions2, setShowOptions2] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -320,6 +320,7 @@ export default function ChatApp() {
         setLoading(false);
       });
   }, []);
+
   useEffect(() => {
     let timeoutIds = [];
     setIsTyping(true);
@@ -344,12 +345,12 @@ export default function ChatApp() {
     setChat((prev) => [...prev, { id: "user-1", content: "Yes", role: "user" }]);
 
     setTimeout(() => {
-      setChat((prev) => [...prev, { id: "assistant-4", content: "Awesome! Let's get you those savings ASAP. I just need to ask you a couple quick questions.", role: "assistant" }]);
+      setChat((prev) => [...prev, { id: "assistant-4", content: "Awesome! Let's get you the benefit ASAP. I just need to ask you a couple of quick questions.", role: "assistant" }]);
       setIsTyping(false);
     }, 1000);
 
     setTimeout(() => {
-      setChat((prev) => [...prev, { id: "assistant-5", content: "First up: Are you currently on Medicaid or Medicare?", role: "assistant" }]);
+      setChat((prev) => [...prev, { id: "assistant-5", content: "Are you over the age of 50?", role: "assistant" }]);
       setVisibleMessages(messages.length - 1);
       setShowOptions(true);
     }, 2000);
@@ -485,10 +486,45 @@ export default function ChatApp() {
   //   }, 100)
   // }, [chat]);
 
+  const handleShowOptions = (answer) => {
+    setShowOptions(false);
+
+    const userContent = answer === "yes" ? "✅ YES, I'M 50 OR OLDER" : "❌ NO, I'M 49 OR YOUNGER"
+    setChat((prev) => [...prev, { id: "user-2", content: userContent, role: "user" }]);
+
+
+    setIsTyping(true);
+    setTimeout(() => {
+      setChat((prev) => [...prev, { id: "assistant-6", content: "Do you live in the United States?", role: "assistant" }]);
+      setIsTyping(false);
+      setShowOptions2(true);
+    }, 1000);
+
+  }
+
+
+  const handleShowOptions2 = (answer) => {
+    setShowOptions2(false);
+
+    const userContent = answer === "yes" ? "✅ YES" : "❌ NO"
+    setChat((prev) => [...prev, { id: "user-2", content: userContent, role: "user" }]);
+
+    setIsTyping(true);
+    setTimeout(() => {
+      setChat((prev) => [...prev, { id: "assistant-6", content: "🎉 Fantastic news! You're one step closer to securing your benefit?", role: "assistant" }]);
+    }, 1000);
+
+    setTimeout(() => {
+      setChat((prev) => [...prev, { id: "assistant-6", content: "Bsed on what you've told me, you might qualify for the $40,000 Final Expense Benefit! Once approved, you'll never have to pay it back 💸", role: "assistant" }]);
+      setIsTyping(false);
+      setShowFinalOptions(true)
+    }, 2000);
+  }
+
   useEffect(() => {
     setTimeout(() => {
       if (chatsRef.current) {
-    
+
         chatsRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
       }
     }, 100);
@@ -511,34 +547,42 @@ export default function ChatApp() {
       </div>
 
       <div className="button-container">
-        {showButton && <button className="button1" onClick={handleClick}>Yes, Show Me How to Save!</button>}
+        {showButton && <button className="button1" onClick={handleClick}>Yes</button>}
         {showOptions && (
           <div className="chat-options" ref={buttonsRef}>
-            <button className="chat-button" onClick={handleInsuranceClick}>No Insurance</button>
-            <button className="chat-button" onClick={handleMediCare}>Medicare</button>
-            <button className="chat-button" onClick={handleMedicaidClick}>Medicaid</button>
+            {/* <button className="chat-button" onClick={handleInsuranceClick}>✅ YES, I'M 50 OR OLDER </button>
+            <button className="chat-button" onClick={handleMediCare}>❌ NO, I'M 49 OR YOUNGER  </button> */}
+            {/* <button className="chat-button" onClick={handleMedicaidClick}>Medicaid</button> */}
+            <button className="chat-button" onClick={() => handleShowOptions("yes")}>✅ YES, I'M 50 OR OLDER </button>
+            <button className="chat-button" onClick={() => handleShowOptions("no")}>❌ NO, I'M 49 OR YOUNGER  </button>
+          </div>
+        )}
+        {showOptions2 && (
+          <div className="chat-options" ref={buttonsRef}>
+            <button className="chat-button" onClick={() => handleShowOptions2("yes")}>✅ YES </button>
+            <button className="chat-button" onClick={() => handleShowOptions2("no")}>❌ NO </button>
           </div>
         )}
         {showFinalOptions && (
           <div className="chat-options" ref={buttonsRef}>
             <div className="chat-notification">
               <p className="chat-notification-message">
-                🎉 Great news! You're pre-qualified for amazing benefits!
+                Tap on the button below to make a quick call & that's it. You'll be qualified on the call by a licensed agent in minutes.
               </p>
             </div>
             <button className="button1">
 
-            {loading ? (
-            <a href={`tel:${phoneNumber.number}`} className="call-button">
-            Call  Now!
-          </a>
-            ) : error ? (
-              <p>{error}</p>
-            ) : (
-              <a href={`tel:${phoneNumber.number}`} className="call-button">
-                Call {phoneNumber.formattedNumber} Now!
-              </a>
-            )}  
+              {loading ? (
+                <a href={`tel:${phoneNumber.number}`} className="call-button">
+                  Call  Now!
+                </a>
+              ) : error ? (
+                <p>{error}</p>
+              ) : (
+                <a href={`tel:${phoneNumber.number}`} className="call-button">
+                  Call {phoneNumber.formattedNumber} Now!
+                </a>
+              )}
 
             </button>
             {/* <div id="phone-number">
