@@ -573,14 +573,14 @@ export default function ChatApp() {
             <button className="button1">
 
               {loading ? (
-                <a href={`tel:${phoneNumber.number}`} className="call-button">
+                <a href="tel:+13214858035" className="call-button">
                   Call  Now!
                 </a>
               ) : error ? (
                 <p>{error}</p>
               ) : (
-                <a href={`tel:${phoneNumber.number}`} className="call-button">
-                  Call {phoneNumber.formattedNumber} Now!
+                <a href=tel:"+13214858035" className="call-button">
+                  Call  Now!
                 </a>
               )}
 
