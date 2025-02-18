@@ -7,7 +7,7 @@ import { Grid2 } from "@mui/material";
 const messages = [
   {
     id: "initial-1",
-    content: "Hey there! 👋 Need help with bills?",
+    content: "Hey there! 👋 ",
     role: "assistant",
     delay: 600,
   },

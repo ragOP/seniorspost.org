@@ -6,7 +6,7 @@ export function Header() {
     return (
         <div className="container">
             <div className="header">
-                <h1>Get a $0 Health Plan + $500 Rewards Card!</h1>
+                <h1>Cover All Your Burial Costs and Unpaid Debts with This Final Allowance Benefit Worth $40,000!</h1>
                 <div className="sub-text">
                     <div className="pulse"></div>
                     Emily is Here to Help You Save!
