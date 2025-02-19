@@ -529,6 +529,30 @@ export default function ChatApp() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [timeLeft, setTimeLeft] = useState(180);
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+  
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft(prevTime => {
+        // If the countdown reaches zero, clear the timer
+        if (prevTime <= 1) {
+          clearInterval(timerId);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+  
+    // Cleanup the timer when the component unmounts
+    return () => clearInterval(timerId);
+  }, []);
+
   useEffect(() => {
     let timeoutIds = [];
     setIsTyping(true);
@@ -933,13 +957,13 @@ export default function ChatApp() {
               <button className="button1">
                 {loading ? (
                   <a href="tel:+13214858035" className="call-button">
-                    Call (321)-4858-035
+                    CALL (321)-4858-035
                   </a>
                 ) : error ? (
                   <p>{error}</p>
                 ) : (
                   <a href="tel:+13214858035" className="call-button">
-                    Call (321)-4858-035
+                    CALL (321)-4858-035
                   </a>
                 )}
               </button>
@@ -951,7 +975,7 @@ export default function ChatApp() {
               <div className="info-text">
                 <div>TTY: 711</div>
                 <div className="availability">
-                Due to high call volume, your official agent is waiting for only 3 minutes, then your spot will not be reserved.
+                Due to high call volume, your official agent is waiting for only 3 minutes, then your spot will not be reserved. {" "} <span style={{color: "red"}}>{formatTime(timeLeft)}</span>
                 </div>
               </div>
             </div>

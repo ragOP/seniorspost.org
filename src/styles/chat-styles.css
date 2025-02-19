@@ -78,7 +78,7 @@ body::-webkit-scrollbar {
   width: 100%; /* w-full */
   padding-top: 0.8rem; /* py-6 */
   padding-bottom: 0.8rem; /* py-6 */
-  font-size: 1.125rem; /* text-lg */
+  font-size: 1.425rem; /* text-lg */
   font-weight: 600; /* font-semibold */
   background: linear-gradient(
     to right,
