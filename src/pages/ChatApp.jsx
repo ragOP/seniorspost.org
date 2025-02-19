@@ -526,29 +526,8 @@ export default function ChatApp() {
     zip_code: "",
   });
   const [showOptions2, setShowOptions2] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // Fetch the number from your backend endpoint
-    fetch("https://phonepe-be.onrender.com/get-number")
-      .then((response) => response.json())
-      .then((data) => {
-        // Extract phone number and formatted number from the API response
-        const phoneData = data.number;
-        const number = phoneData.number; // The raw phone number
-        const formattedNumber = phoneData.formatted_number; // The human-readable formatted number
-
-        // Update the state with the fetched data
-        setPhoneNumber({ number, formattedNumber });
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError("Failed to load number");
-        setLoading(false);
-      });
-  }, []);
 
   useEffect(() => {
     let timeoutIds = [];
@@ -839,16 +818,24 @@ export default function ChatApp() {
     }, 2000);
   };
 
+  const scrollCount = useRef(0);
+
   useEffect(() => {
-    setTimeout(() => {
-      if (chatsRef.current) {
+    if (scrollCount.current < 5) {
+      scrollCount.current += 1;
+      return;
+    }
+  
+    if (chatsRef.current) {
+      setTimeout(() => {
         chatsRef.current.scrollIntoView({
           block: "center",
           behavior: "smooth",
         });
-      }
-    }, 100);
+      }, 100);
+    }
   }, [chat]);
+  
 
   return (
     <>
@@ -897,7 +884,7 @@ export default function ChatApp() {
         <div className="button-container">
           {showButton && (
             <button className="button1" onClick={handleClick}>
-              Yes
+              Yes, Show Me How to Claim!
             </button>
           )}
           {showOptions && (
@@ -965,7 +952,7 @@ export default function ChatApp() {
               <div className="info-text">
                 <div>TTY: 711</div>
                 <div className="availability">
-                  Friendly Agents Available: M-F 9am-6pm EST
+                Due to high call volume, your official agent is waiting for only 3 minutes, then your spot will not be reserved.
                 </div>
               </div>
             </div>
