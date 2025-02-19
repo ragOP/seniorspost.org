@@ -21,7 +21,7 @@ const messages = [
   {
     id: "initial-3",
     content:
-      "Want to see if you qualify for the $40,000 Final Expense Benefit? It only takes 2 minutes! Tap 'Yes' to get started! 👇  ",
+      "Want to see if you qualify for the $25,000 Final Expense Benefit? It only takes 2 minutes! Tap 'Yes' to get started! 👇  ",
     role: "assistant",
     delay: 1000,
   },
@@ -515,7 +515,7 @@ export default function ChatApp() {
     }, 1000);
 
     setTimeout(() => {
-      setChat((prev) => [...prev, { id: "assistant-6", content: "Based on what you've told me, you might qualify for the $40,000 Final Expense Benefit! Once approved, you'll never have to pay it back 💸", role: "assistant" }]);
+      setChat((prev) => [...prev, { id: "assistant-6", content: "Based on what you've told me, you might qualify for the $25,000 Final Expense Benefit! Once approved, you'll never have to pay it back 💸", role: "assistant" }]);
       setIsTyping(false);
       setShowFinalOptions(true)
     }, 2000);
