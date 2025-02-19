@@ -10,6 +10,8 @@ import Chat25k from "./pages/Chat25k";
 import { Footer } from "./pages/Footer";
 import { Header } from "./pages/Header";
 import { BrowserRouter, Routes, Route } from "react-router";
+import Terms from "./pages/Terms";
+import Privacy from "./pages/Privacy";
 
 function App() {
   const [isShowingPanel, setIsShowingPanel] = useState(false);
@@ -46,6 +48,8 @@ function App() {
         <Routes>
           <Route path="/engchat1" element={<ChatApp />} />
           <Route path="/engchat25k" element={<Chat25k />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </BrowserRouter>
     </div>

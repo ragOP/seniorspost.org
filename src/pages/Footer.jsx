@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import '../styles/footer.css'
 
 export function Footer() {
@@ -5,9 +6,9 @@ export function Footer() {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-links">
-          <a href="#">Privacy Policy</a>
+          <Link to="/Privacy">Privacy Policy</Link>
           <span className="footer-divider">|</span>
-          <a href="#">Terms and Conditions</a>
+          <Link to="/Terms">Terms and Conditions</Link>
         </div>
       </div>
     </footer>
