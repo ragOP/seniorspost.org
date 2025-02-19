@@ -6,8 +6,10 @@ import Single from "./pages/Single";
 import { ToastContainer } from "@cred/neopop-web/lib/components";
 import ChatApp from "./pages/ChatApp";
 import ChatApp2 from "./pages/ChatApp2";
+import Chat25k from "./pages/Chat25k";
 import { Footer } from "./pages/Footer";
 import { Header } from "./pages/Header";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [isShowingPanel, setIsShowingPanel] = useState(false);
@@ -65,22 +67,16 @@ function App() {
 
   return (
     <div>
-      {/* {!isShowingPanel && <ShowHistoryPage onClick={onShowHistory} />}
-      {isShowingPanel && <AdminPanel />} */}
-      {/* <Raghib /> */}
-      {/* <Single /> */}
-      <ToastContainer />
-      {/* {loading ? (
-        <p>Loading phone number...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : phoneNumber ? (
-        <a href={`tel:${phoneNumber.number}`}>{phoneNumber.formattedNumber}</a>
-      ) : null} */}
-      <Header />
-      {!hasPassed530ET ? <ChatApp /> : <ChatApp />}
-      <Footer />
-    </div>
+     <Header />
+     <ToastContainer />
+     <BrowserRouter>
+     <Routes>
+       <Route path="/engchat1" element={<ChatApp />} />
+       <Route path="/engchat25k" element={<Chat25k />} />
+     </Routes>
+     </BrowserRouter>
+     <Footer />
+   </div>
   );
 }
 
