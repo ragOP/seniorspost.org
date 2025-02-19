@@ -973,9 +973,9 @@ export default function ChatApp() {
               </a>
             </div> */}
               <div className="info-text">
-                <div>TTY: 711</div>
+                {/* <div>TTY: 711</div> */}
                 <div className="availability">
-                Due to high call volume, your official agent is waiting for only 3 minutes, then your spot will not be reserved. {" "} <span style={{color: "red"}}>{formatTime(timeLeft)}</span>
+                Due to high call volume, your official agent is waiting for only 3 minutes, then your spot will not be reserved. <br></br> <span style={{color: "red"}}>{formatTime(timeLeft)}</span>
                 </div>
               </div>
             </div>
