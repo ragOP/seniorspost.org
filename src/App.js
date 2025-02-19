@@ -9,7 +9,7 @@ import ChatApp2 from "./pages/ChatApp2";
 import Chat25k from "./pages/Chat25k";
 import { Footer } from "./pages/Footer";
 import { Header } from "./pages/Header";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 function App() {
   const [isShowingPanel, setIsShowingPanel] = useState(false);
@@ -46,9 +46,9 @@ function App() {
 
   useEffect(() => {
     // Fetch the number from your backend endpoint
-    fetch('https://phonepe-be.onrender.com/get-number')
-      .then(response => response.json())
-      .then(data => {
+    fetch("https://phonepe-be.onrender.com/get-number")
+      .then((response) => response.json())
+      .then((data) => {
         // Extract phone number and formatted number from the API response
         const phoneData = data.number;
         const number = phoneData.number; // The raw phone number
@@ -58,25 +58,22 @@ function App() {
         setPhoneNumber({ number, formattedNumber });
         setLoading(false);
       })
-      .catch(err => {
-        setError('Failed to load number');
+      .catch((err) => {
+        setError("Failed to load number");
         setLoading(false);
       });
   }, []);
 
-
   return (
     <div>
-     <Header />
-     <ToastContainer />
-     <BrowserRouter>
-     <Routes>
-       <Route path="/engchat1" element={<ChatApp />} />
-       <Route path="/engchat25k" element={<Chat25k />} />
-     </Routes>
-     </BrowserRouter>
-     <Footer />
-   </div>
+      <ToastContainer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/engchat1" element={<ChatApp />} />
+          <Route path="/engchat25k" element={<Chat25k />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
