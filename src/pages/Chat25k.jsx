@@ -821,7 +821,7 @@ export default function ChatApp() {
         {
           id: "assistant-6",
           content:
-            "🎉 Fantastic news! You're one step closer to securing your benefit?",
+            "🎉 Fantastic news! You're one step closer to securing your benefit",
           role: "assistant",
         },
       ]);
