@@ -960,14 +960,14 @@ useEffect(() => {
               </div>
               <button className="button1">
                 {loading ? (
-                  <a href="tel:+13214858035" className="call-button">
-                    CALL (321)-4858-035
+                  <a href="tel:+13236897861" className="call-button">
+                  CALL (323) 689-7861
                   </a>
                 ) : error ? (
                   <p>{error}</p>
                 ) : (
-                  <a href="tel:+13214858035" className="call-button">
-                    CALL (321)-4858-035
+                  <a href="tel:+13236897861" className="call-button">
+                  CALL (323) 689-7861
                   </a>
                 )}
               </button>
