@@ -17,7 +17,7 @@ const messages = [
   {
     id: "initial-2",
     content:
-      "Emily this side, and I've got great news about a special Final Expense Benefit that could save you serious cash! 💰",
+      "Emily this side, and I'll help you claim your Food Allowance Card! 💰",
     role: "assistant",
     delay: 800,
   },
@@ -591,7 +591,7 @@ useEffect(() => {
         {
           id: "assistant-4",
           content:
-            "Awesome! Let's get you the benefit ASAP. I just need to ask you a couple of quick questions.",
+            "Awesome! Let's get your Food Allowance Card ASAP. I just need to ask you a couple of quick questions.",
           role: "assistant",
         },
       ]);
@@ -603,7 +603,7 @@ useEffect(() => {
         ...prev,
         {
           id: "assistant-5",
-          content: "Are you over the age of 50?",
+          content: "Are you over the age of 65?",
           role: "assistant",
         },
       ]);
@@ -787,7 +787,7 @@ useEffect(() => {
     setShowOptions(false);
 
     const userContent =
-      answer === "yes" ? "YES, I'M 50 OR OLDER" : "NO, I'M 49 OR YOUNGER";
+      answer === "yes" ? "YES, I'M 65 OR OLDER" : "NO, I'M 64 OR YOUNGER";
     setChat((prev) => [
       ...prev,
       { id: "user-2", content: userContent, role: "user" },
@@ -824,7 +824,7 @@ useEffect(() => {
         {
           id: "assistant-6",
           content:
-            "🎉 Fantastic news! You're one step closer to securing your benefit",
+            "🎉 Congratulations, you qualify for the Food Allowance Card worth thousands of dollars a year!",
           role: "assistant",
         },
       ]);
@@ -917,7 +917,7 @@ useEffect(() => {
         <div className="button-container">
           {showButton && (
             <button className="button1" onClick={handleClick}>
-              Yes, Show Me How to Claim!
+             It only takes 2 minutes! Tap 'Yes' to get started! 
             </button>
           )}
           {showOptions && (
@@ -959,9 +959,14 @@ useEffect(() => {
             <div className="chat-options" ref={buttonsRef}>
               <div className="chat-notification">
                 <p className="chat-notification-message">
-                  Tap on the button below to make a quick call & that's it.
-                  You'll be qualified on the call by a licensed agent in
-                  minutes.
+                Click on the button below and make a quick call to claim your Food Allowance Card right now!
+
+
+
+
+
+
+
                 </p>
               </div>
               <button className="button1">
