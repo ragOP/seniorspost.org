@@ -17,7 +17,7 @@ const messages = [
   {
     id: "initial-2",
     content:
-      "Emily this side, and I'll help you claim your Food Allowance Card! 💰",
+      "Emily this side, and I'll help you claim your Food Allowance Card! ",
     role: "assistant",
     delay: 800,
   },
