@@ -917,7 +917,7 @@ useEffect(() => {
         <div className="button-container">
           {showButton && (
             <button className="button1" onClick={handleClick}>
-             It only takes 2 minutes! Tap 'Yes' to get started! 
+             Yes, Show Me How to Claim!
             </button>
           )}
           {showOptions && (
