@@ -869,12 +869,18 @@ useEffect(() => {
       <div className="container">
         <div className="header">
           <h1>
-            Cover All Your Burial Costs and Unpaid Debts with This Final
-            Allowance Benefit Worth $40,000!
+          Seniors On Medicare Can Claim Their Food Allowance Card Worth Thousands Of Dollars!
+
+
+
+
+
+
+
           </h1>
           <div className="sub-text">
             <div className="pulse"></div>
-            Emily is Here to Help You Save!
+            Emily is Here to Help You Claim!
           </div>
         </div>
 
